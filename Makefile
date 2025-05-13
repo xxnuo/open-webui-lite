@@ -31,3 +31,11 @@ update:
 	$(DOCKER_COMPOSE) up --build -d
 	$(DOCKER_COMPOSE) start
 
+VERSION := $(shell git rev-parse --short HEAD)
+
+build:
+	docker buildx build \
+	--platform linux/amd64,linux/arm64 \
+	-t registry.lazycat.cloud/x/open-webui:$(VERSION) \
+	-t registry.lazycat.cloud/x/open-webui:latest \
+	--push .

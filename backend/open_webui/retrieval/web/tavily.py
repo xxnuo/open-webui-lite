@@ -1,3 +1,4 @@
+import os
 import logging
 from typing import Optional
 
@@ -26,7 +27,8 @@ def search_tavily(
     Returns:
         list[SearchResult]: A list of search results
     """
-    url = "https://api.tavily.com/search"
+    base_url = os.getenv("TAVILY_BASE_URL", "https://api.tavily.com")
+    url = f"{base_url}/search"
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {api_key}",
