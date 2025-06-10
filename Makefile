@@ -58,9 +58,9 @@ sync-clean:
 build: sync-to-arm
 	ssh -t $(REMOTE) "cd $(REMOTE_PATH) && \
 		docker build \
-	    -f Dockerfile \
-	    -t $(DOCKER_REGISTRY):$(VERSION) \
-	    -t $(DOCKER_REGISTRY):latest \
+		-f Dockerfile \
+		-t $(DOCKER_REGISTRY):$(VERSION) \
+		-t $(DOCKER_REGISTRY):latest \
         --network host \
         --build-arg "HTTP_PROXY=$(ENV_PROXY)" \
         --build-arg "HTTPS_PROXY=$(ENV_PROXY)" \
