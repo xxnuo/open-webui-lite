@@ -87,7 +87,7 @@ test: build
 		--network host \
 		$(DOCKER_REGISTRY):latest"
 
-test-amd: build-amd
+test-amd:
 	docker run -it --rm \
 		--name $(DOCKER_NAME) \
 		--network host \
@@ -100,6 +100,13 @@ inspect:
 		--network host \
 		$(DOCKER_REGISTRY):latest \
 		bash"
+
+inspect-amd:
+	docker run -it --rm \
+		--name $(DOCKER_NAME) \
+		--network host \
+		$(DOCKER_REGISTRY)-amd:latest \
+		bash
 
 push:
 	ssh -t $(REMOTE) "cd $(REMOTE_PATH) && \
