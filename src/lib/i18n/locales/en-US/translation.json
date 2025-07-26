@@ -1435,7 +1435,7 @@
 	"Web API": "",
 	"Web Loader Engine": "",
 	"Web Search": "",
-	"Web Search Engine": "",
+	"Web Search Engine": "Web Search engine (Tavily is powered by the AI Pod's built-in search engine and AI crawler, not the online Tavily service)",
 	"Web Search in Chat": "",
 	"Web Search Query Generation": "",
 	"Webhook URL": "",
