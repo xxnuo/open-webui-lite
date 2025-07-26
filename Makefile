@@ -80,12 +80,18 @@ build-amd:
         --build-arg "NO_PROXY=localhost,192.168.1.200,registry.lazycat.cloud" \
 		.
 
-test: compile build
+test: build
 	ssh -t $(REMOTE) "cd $(REMOTE_PATH) && \
 		docker run -it --rm \
 		--name $(DOCKER_NAME) \
 		--network host \
 		$(DOCKER_REGISTRY):latest"
+
+test-amd: build-amd
+	docker run -it --rm \
+		--name $(DOCKER_NAME) \
+		--network host \
+		$(DOCKER_REGISTRY)-amd:latest
 
 inspect:
 	ssh -t $(REMOTE) "cd $(REMOTE_PATH) && \
