@@ -25,6 +25,8 @@ ARG BUILD_HASH
 
 WORKDIR /app
 
+RUN sed -i 's#https\?://dl-cdn.alpinelinux.org/alpine#https://mirrors.tuna.tsinghua.edu.cn/alpine#g' /etc/apk/repositories
+
 # to store git revision in build
 RUN apk add --no-cache git
 
