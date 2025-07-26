@@ -1,0 +1,41 @@
+services:
+  test-open-webui-amd:
+    image: registry.lazycat.cloud/x/open-webui-amd:latest
+    environment:
+      - ENABLE_PERSISTENT_CONFIG=False
+      - WEBUI_AUTH=False
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - HF_ENDPOINT=https://hf-mirror.com
+      - DEFAULT_LOCALE=zh-CN
+      - ENABLE_MODEL_FILTER=False
+      - ENABLE_OPENAI_API=False
+      - WHISPER_MODEL_AUTO_UPDATE=False
+      - ENABLE_AUTOCOMPLETE_GENERATION=False
+      - RAG_EMBEDDING_ENGINE=ollama
+      - RAG_OLLAMA_BASE_URL=http://ollama:11434
+      - RAG_EMBEDDING_MODEL=bge-m3
+      - RAG_RERANKING_MODEL=linux6200/bge-reranker-v2-m3
+      - RAG_EMBEDDING_MODEL_AUTO_UPDATE=False
+      - RAG_RERANKING_MODEL_AUTO_UPDATE=False
+      - RAG_WEB_SEARCH_ENGINE=tavily
+      - RAG_WEB_SEARCH_RESULT_COUNT=5
+      - RAG_WEB_SEARCH_CONCURRENT_REQUESTS=5
+      - ENABLE_SEARCH_QUERY=True
+      - RAG_FULL_CONTEXT=True
+      - ENABLE_SEARCH_QUERY_GENERATION=True
+      - ENABLE_RAG_WEB_SEARCH=True
+      - ENABLE_RAG_HYBRID_SEARCH=False
+      - RAG_EMBEDDING_BATCH_SIZE=4
+      - DEFAULT_MODELS=qwen3:8b
+      - TASK_MODEL=qwen3:4b
+      - ENABLE_WEB_SEARCH=True
+      - BYPASS_WEB_SEARCH_EMBEDDING_AND_RETRIEVAL=True
+      - WEB_SEARCH_ENGINE=tavily
+      - WEB_SEARCH_RESULT_COUNT=5
+      - WEB_SEARCH_CONCURRENT_REQUESTS=5
+      - WEB_SEARCH_TRUST_ENV=True
+      - WEB_LOADER_ENGINE=tavily
+      - TAVILY_API_KEY=use-aisearch-1.1.0
+      - TAVILY_BASE_URL=http://aisearch:3000
+    expose:
+      - 8080
