@@ -1435,7 +1435,7 @@
 	"Web API": "API Web",
 	"Web Loader Engine": "Motore di Caricamento Web",
 	"Web Search": "Ricerca sul Web",
-	"Web Search Engine": "Motore di Ricerca Web",
+	"Web Search Engine": "Motore di Ricerca Web (Tavily è alimentato dal motore di ricerca integrato e dal crawler AI dell'AI Pod, non dal servizio online Tavily)",
 	"Web Search in Chat": "Ricerca Web in chat",
 	"Web Search Query Generation": "Generazione di query di ricerca Web",
 	"Webhook URL": "URL webhook",

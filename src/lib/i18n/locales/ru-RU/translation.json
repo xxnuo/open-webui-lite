@@ -1435,7 +1435,7 @@
 	"Web API": "Веб API",
 	"Web Loader Engine": "Движок веб-загрузчика",
 	"Web Search": "Веб-поиск",
-	"Web Search Engine": "Поисковая система",
+	"Web Search Engine": "Поисковая система (Tavily працює на вбудованій пошуковій системі та сканері на базі штучного інтелекту AI Pod, а не на онлайн-сервісі Tavily)",
 	"Web Search in Chat": "Поисковая система в чате",
 	"Web Search Query Generation": "Генерация запросов веб-поиска",
 	"Webhook URL": "URL-адрес веб-хука",

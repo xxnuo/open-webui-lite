@@ -1435,7 +1435,7 @@
 	"Web API": "ウェブAPI",
 	"Web Loader Engine": "",
 	"Web Search": "ウェブ検索",
-	"Web Search Engine": "ウェブ検索エンジン",
+	"Web Search Engine": "ウェブ検索エンジン（Tavily は、オンラインの Tavily サービスではなく、AI Pod の組み込み検索エンジンと AI クローラーによって駆動されます）",
 	"Web Search in Chat": "チャットでウェブ検索",
 	"Web Search Query Generation": "ウェブ検索クエリ生成",
 	"Webhook URL": "Webhook URL",
