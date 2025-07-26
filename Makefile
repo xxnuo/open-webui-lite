@@ -120,3 +120,4 @@ push-amd:
 prepare-amd:
 	curl -L -O http://dl.corp.linakesi.cn/lzc-ai/ipex/sentence-transformers.tar.zst
 	zstd -d sentence-transformers.tar.zst -c | tar -xvf -
+	rm sentence-transformers.tar.zst
