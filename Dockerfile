@@ -30,7 +30,9 @@ RUN sed -i 's#https\?://dl-cdn.alpinelinux.org/alpine#https://mirrors.tuna.tsing
 # to store git revision in build
 RUN apk add --no-cache git
 
-RUN npm config set registry https://registry.npmmirror.com
+# RUN npm config set registry https://registry.npmmirror.com
+RUN npm config set proxy $HTTP_PROXY
+RUN npm config set https-proxy $HTTP_PROXY
 
 COPY package.json package-lock.json ./
 RUN npm ci --force
