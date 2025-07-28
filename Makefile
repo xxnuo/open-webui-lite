@@ -41,8 +41,8 @@ ENV_PROXY := http://192.168.1.200:7890
 build-multiarch:
 	docker buildx build \
 	--platform linux/amd64,linux/arm64 \
-	-t registry.lazycat.cloud/x/open-webui:$(VERSION) \
-	-t registry.lazycat.cloud/x/open-webui:latest \
+	-t $(DOCKER_REGISTRY):$(VERSION) \
+	-t $(DOCKER_REGISTRY):latest \
 	--push .
 
 sync-from-arm:
@@ -64,12 +64,21 @@ build: sync-to-arm
         --network host \
         --build-arg "HTTP_PROXY=$(ENV_PROXY)" \
         --build-arg "HTTPS_PROXY=$(ENV_PROXY)" \
-		--build-arg "ALL_PROXY=$(ENV_PROXY)" \
-        --build-arg "http_proxy=$(ENV_PROXY)" \
-        --build-arg "https_proxy=$(ENV_PROXY)" \
-		--build-arg "all_proxy=$(ENV_PROXY)" \
+				--build-arg "ALL_PROXY=$(ENV_PROXY)" \
         --build-arg "NO_PROXY=localhost,192.168.1.200,registry.lazycat.cloud" \
 		."
+
+build-amd:
+	docker build \
+		-f Dockerfile \
+		-t $(DOCKER_REGISTRY)-amd:$(VERSION) \
+		-t $(DOCKER_REGISTRY)-amd:latest \
+        --network host \
+        --build-arg "HTTP_PROXY=$(ENV_PROXY)" \
+        --build-arg "HTTPS_PROXY=$(ENV_PROXY)" \
+				--build-arg "ALL_PROXY=$(ENV_PROXY)" \
+        --build-arg "NO_PROXY=localhost,192.168.1.200,registry.lazycat.cloud" \
+		.
 
 test: compile build
 	ssh -t $(REMOTE) "cd $(REMOTE_PATH) && \
@@ -90,3 +99,7 @@ push:
 	ssh -t $(REMOTE) "cd $(REMOTE_PATH) && \
 		docker push $(DOCKER_REGISTRY):$(VERSION) && \
 		docker push $(DOCKER_REGISTRY):latest"
+
+push-amd:
+	docker push $(DOCKER_REGISTRY)-amd:$(VERSION) && \
+	docker push $(DOCKER_REGISTRY)-amd:latest
