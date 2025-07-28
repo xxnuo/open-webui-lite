@@ -18,4 +18,3 @@ uploads
 **/*.db
 _test
 backend/data/*
-sentence-transformers
