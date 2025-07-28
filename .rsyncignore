@@ -1,0 +1,4 @@
+.venv
+ignore.*
+build_script.py
+*.pyc
