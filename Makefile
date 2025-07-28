@@ -88,10 +88,7 @@ test: build
 		$(DOCKER_REGISTRY):latest"
 
 test-amd:
-	docker run -it --rm \
-		--name $(DOCKER_NAME) \
-		--network host \
-		$(DOCKER_REGISTRY)-amd:latest
+	docker compose -f compose.amd.yaml up
 
 inspect:
 	ssh -t $(REMOTE) "cd $(REMOTE_PATH) && \
