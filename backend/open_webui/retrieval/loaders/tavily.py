@@ -1,3 +1,4 @@
+import os
 import requests
 import logging
 from typing import Iterator, List, Literal, Union
@@ -50,7 +51,8 @@ class TavilyLoader(BaseLoader):
         self.urls = urls if isinstance(urls, list) else [urls]
         self.extract_depth = extract_depth
         self.continue_on_failure = continue_on_failure
-        self.api_url = "https://api.tavily.com/extract"
+        self.base_url = os.getenv("TAVILY_BASE_URL", "https://api.tavily.com")
+        self.api_url = f"{self.base_url}/extract"
 
     def lazy_load(self) -> Iterator[Document]:
         """Extract and yield documents from the URLs using Tavily Extract API."""
