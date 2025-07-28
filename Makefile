@@ -36,7 +36,7 @@ REMOTE := nvidia@gpu
 REMOTE_PATH := ~/work/open-webui
 DOCKER_REGISTRY := registry.lazycat.cloud/x/open-webui
 DOCKER_NAME := open-webui
-ENV_PROXY := http://192.168.1.200:7890
+ENV_PROXY := http://wa.lan:7890
 
 build-multiarch:
 	docker buildx build \
