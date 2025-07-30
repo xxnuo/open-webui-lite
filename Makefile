@@ -110,7 +110,7 @@ push:
 		docker push $(DOCKER_REGISTRY):$(VERSION) && \
 		docker push $(DOCKER_REGISTRY):latest"
 
-push-amd:
+push-amd: build-amd
 	docker push $(DOCKER_REGISTRY)-amd:$(VERSION) && \
 	docker push $(DOCKER_REGISTRY)-amd:latest
 
