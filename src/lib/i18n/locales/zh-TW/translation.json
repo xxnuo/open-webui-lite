@@ -1435,7 +1435,7 @@
 	"Web API": "網頁 API",
 	"Web Loader Engine": "網頁載入引擎",
 	"Web Search": "網頁搜尋",
-	"Web Search Engine": "網頁搜尋引擎",
+	"Web Search Engine": "網頁搜尋引擎（Tavily 由 AI Pod 內置的搜索引擎及 AI 爬蟲驅動, 非在線 Tavily 服務）",
 	"Web Search in Chat": "在對話中進行網頁搜尋",
 	"Web Search Query Generation": "網頁搜尋查詢生成",
 	"Webhook URL": "Webhook URL",

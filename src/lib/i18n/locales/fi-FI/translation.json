@@ -1435,7 +1435,7 @@
 	"Web API": "Web-API",
 	"Web Loader Engine": "Verkkolataaja moottori",
 	"Web Search": "Verkkohaku",
-	"Web Search Engine": "Hakukoneet",
+	"Web Search Engine": "Hakukoneet (Tavily toimii tekoälypodin sisäänrakennetun hakukoneen ja tekoälyindeksoijan avulla, ei Tavilyn verkkopalvelun avulla)",
 	"Web Search in Chat": "Verkkohaku keskustelussa",
 	"Web Search Query Generation": "Verkkohakukyselyn luonti",
 	"Webhook URL": "Webhook verkko-osoite",
