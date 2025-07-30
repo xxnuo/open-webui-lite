@@ -1449,7 +1449,9 @@ JSON format: { "title": "your concise title here" }
 ### Chat History:
 <chat_history>
 {{MESSAGES:END:2}}
-</chat_history>"""
+</chat_history>
+
+/no_think"""
 
 TAGS_GENERATION_PROMPT_TEMPLATE = PersistentConfig(
     "TAGS_GENERATION_PROMPT_TEMPLATE",
@@ -1473,7 +1475,9 @@ JSON format: { "tags": ["tag1", "tag2", "tag3"] }
 ### Chat History:
 <chat_history>
 {{MESSAGES:END:6}}
-</chat_history>"""
+</chat_history>
+
+/no_think"""
 
 IMAGE_PROMPT_GENERATION_PROMPT_TEMPLATE = PersistentConfig(
     "IMAGE_PROMPT_GENERATION_PROMPT_TEMPLATE",
@@ -1499,7 +1503,9 @@ Strictly return in JSON format:
 ### Chat History:
 <chat_history>
 {{MESSAGES:END:6}}
-</chat_history>"""
+</chat_history>
+
+/no_think"""
 
 
 FOLLOW_UP_GENERATION_PROMPT_TEMPLATE = PersistentConfig(
@@ -1522,7 +1528,9 @@ JSON format: { "follow_ups": ["Question 1?", "Question 2?", "Question 3?"] }
 ### Chat History:
 <chat_history>
 {{MESSAGES:END:6}}
-</chat_history>"""
+</chat_history>
+
+/no_think"""
 
 ENABLE_FOLLOW_UP_GENERATION = PersistentConfig(
     "ENABLE_FOLLOW_UP_GENERATION",
@@ -1584,7 +1592,8 @@ Strictly return in JSON format:
 <chat_history>
 {{MESSAGES:END:6}}
 </chat_history>
-"""
+
+/no_think"""
 
 ENABLE_AUTOCOMPLETE_GENERATION = PersistentConfig(
     "ENABLE_AUTOCOMPLETE_GENERATION",
@@ -1645,7 +1654,8 @@ Output:
 <type>{{TYPE}}</type>  
 <text>{{PROMPT}}</text>  
 #### Output:
-"""
+
+/no_think"""
 
 TOOLS_FUNCTION_CALLING_PROMPT_TEMPLATE = PersistentConfig(
     "TOOLS_FUNCTION_CALLING_PROMPT_TEMPLATE",
@@ -1675,18 +1685,24 @@ The format for the JSON response is strictly:
     {"name": "toolName1", "parameters": {"key1": "value1"}},
     {"name": "toolName2", "parameters": {"key2": "value2"}}
   ]
-}"""
+}
+
+/no_think"""
 
 
 DEFAULT_EMOJI_GENERATION_PROMPT_TEMPLATE = """Your task is to reflect the speaker's likely facial expression through a fitting emoji. Interpret emotions from the message and reflect their facial expression using fitting, diverse emojis (e.g., 😊, 😢, 😡, 😱).
 
-Message: ```{{prompt}}```"""
+Message: ```{{prompt}}```
+
+/no_think"""
 
 DEFAULT_MOA_GENERATION_PROMPT_TEMPLATE = """You have been provided with a set of responses from various models to the latest user query: "{{prompt}}"
 
 Your task is to synthesize these responses into a single, high-quality response. It is crucial to critically evaluate the information provided in these responses, recognizing that some of it may be biased or incorrect. Your response should not simply replicate the given answers but should offer a refined, accurate, and comprehensive reply to the instruction. Ensure your response is well-structured, coherent, and adheres to the highest standards of accuracy and reliability.
 
-Responses from models: {{responses}}"""
+Responses from models: {{responses}}
+
+/no_think"""
 
 
 ####################################
@@ -1816,7 +1832,9 @@ DEFAULT_CODE_INTERPRETER_PROMPT = """
    - **If a link to an image, audio, or any file is provided in markdown format in the output, ALWAYS regurgitate word for word, explicitly display it as part of the response to ensure the user can access it easily, do NOT change the link.**
    - All responses should be communicated in the chat's primary language, ensuring seamless understanding. If the chat is multilingual, default to English for clarity.
 
-Ensure that the tools are effectively utilized to achieve the highest-quality analysis for the user."""
+Ensure that the tools are effectively utilized to achieve the highest-quality analysis for the user.
+
+/no_think"""
 
 
 ####################################
