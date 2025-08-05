@@ -3,7 +3,6 @@ services:
     image: registry.lazycat.cloud/x/open-webui-amd:latest
     environment:
       - ENABLE_PERSISTENT_CONFIG=False
-      - WEBUI_AUTH=False
       - OLLAMA_BASE_URL=http://ollama:11434
       - HF_ENDPOINT=https://hf-mirror.com
       - DEFAULT_LOCALE=zh-CN
@@ -37,5 +36,5 @@ services:
       - WEB_LOADER_ENGINE=tavily
       - TAVILY_API_KEY=use-aisearch-1.1.0
       - TAVILY_BASE_URL=http://aisearch:3000
-    expose:
-      - 8080
+    ports:
+      - 8080:8080
