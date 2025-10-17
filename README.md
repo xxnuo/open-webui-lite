@@ -23,8 +23,7 @@ Open WebUI Lite, a lightweight implementation of Open WebUI
 
 #### Changes:
 
-- Keep core functionality
-- Remove unnecessary features
+- Adapt to Rust Lite backend
 
 ### Rust Backend
 
@@ -34,7 +33,7 @@ Based on [knox's](https://github.com/knoxchat) Rust backend
 
 #### Changes:
 
-- Remove database dependencies
-- Remove Redis dependencies
+- Add SQLite database support
+- Remove Postgres database dependencies
 
 > You can support [knox's](https://github.com/knoxchat/open-webui-rust) backend development if you find it useful.
