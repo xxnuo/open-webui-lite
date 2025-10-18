@@ -15,204 +15,109 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build-backend:
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          # Linux x86_64
-          - platform: ubuntu-22.04
-            target: x86_64-unknown-linux-gnu
-            rust-target: x86_64-unknown-linux-gnu
-          # Linux ARM64
-          - platform: ubuntu-22.04
-            target: aarch64-unknown-linux-gnu
-            rust-target: aarch64-unknown-linux-gnu
-          # macOS Intel
-          - platform: macos-latest
-            target: x86_64-apple-darwin
-            rust-target: x86_64-apple-darwin
-          # macOS Apple Silicon
-          - platform: macos-latest
-            target: aarch64-apple-darwin
-            rust-target: aarch64-apple-darwin
-          # Windows x86_64
-          - platform: windows-latest
-            target: x86_64-pc-windows-msvc
-            rust-target: x86_64-pc-windows-msvc
-          # Windows ARM64
-          - platform: windows-latest
-            target: aarch64-pc-windows-msvc
-            rust-target: aarch64-pc-windows-msvc
-
-    runs-on: ${{ matrix.platform }}
-
+  # Build rust frontend once and cache it
+  build-rust-frontend:
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v1
+      - uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
-
-      - name: Setup Rust
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: ${{ matrix.rust-target }}
-
-      - name: Rust cache
-        uses: swatinem/rust-cache@v2
-        with:
-          workspaces: "./backend/rust-backend -> target"
-          key: ${{ matrix.target }}
-
-      - name: Prepare Git
-        run: |
-          mkdir -p build
-
-      - name: Install cross-compilation tools (Linux ARM64)
-        if: matrix.target == 'aarch64-unknown-linux-gnu'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
-
-      - name: Prepare Backend
-        run: |
-          cd backend
-          bun install
-          cd rust-backend
-          cargo fetch --target ${{ matrix.rust-target }}
 
       - name: Build Frontend
         run: |
-          cd frontend
+          cd backend
           bun install
           bun run build
 
-      - name: Build Backend (Unix)
-        if: runner.os != 'Windows'
-        env:
-          CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: aarch64-linux-gnu-gcc
-        run: |
-          cd backend/rust-backend
-          cargo build --release --target ${{ matrix.rust-target }}
-          cp target/${{ matrix.rust-target }}/release/open-webui-rust ../../build/open-webui-lite-${{ matrix.target }}
-
-      - name: Build Backend (Windows)
-        if: runner.os == 'Windows'
-        run: |
-          cd backend/rust-backend
-          cargo build --release --target ${{ matrix.rust-target }}
-          copy target/${{ matrix.rust-target }}/release/open-webui-rust.exe ../../build/open-webui-lite-${{ matrix.target }}.exe
-
-      - name: Upload Backend Artifact
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
-          name: backend-${{ matrix.target }}
-          path: build/open-webui-lite-*
-          if-no-files-found: error
+          name: rust-frontend-build
+          path: backend/build/
+          retention-days: 1
 
-  build-desktop:
-    needs: build-backend
+  # Build backend and desktop in one job
+  build:
+    needs: build-rust-frontend
     strategy:
       fail-fast: false
       matrix:
         include:
-          # Linux x86_64
           - platform: ubuntu-22.04
             target: x86_64-unknown-linux-gnu
-            rust-target: x86_64-unknown-linux-gnu
-          # Linux ARM64
           - platform: ubuntu-22.04
             target: aarch64-unknown-linux-gnu
-            rust-target: aarch64-unknown-linux-gnu
-          # macOS Intel
           - platform: macos-latest
             target: x86_64-apple-darwin
-            rust-target: x86_64-apple-darwin
-          # macOS Apple Silicon
           - platform: macos-latest
             target: aarch64-apple-darwin
-            rust-target: aarch64-apple-darwin
-          # Windows x86_64
           - platform: windows-latest
             target: x86_64-pc-windows-msvc
-            rust-target: x86_64-pc-windows-msvc
-          # Windows ARM64
           - platform: windows-latest
             target: aarch64-pc-windows-msvc
-            rust-target: aarch64-pc-windows-msvc
 
     runs-on: ${{ matrix.platform }}
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
 
-      - name: Install dependencies (Ubuntu x86_64)
-        if: matrix.target == 'x86_64-unknown-linux-gnu'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
-
-      - name: Install dependencies (Ubuntu ARM64)
-        if: matrix.target == 'aarch64-unknown-linux-gnu'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
-          sudo dpkg --add-architecture arm64
-          sudo apt-get update
-          sudo apt-get install -y libwebkit2gtk-4.1-dev:arm64 libappindicator3-dev:arm64 librsvg2-dev:arm64 patchelf
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v1
+      - uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
 
-      - name: Setup Rust
-        uses: dtolnay/rust-toolchain@stable
+      - uses: dtolnay/rust-toolchain@stable
         with:
-          targets: ${{ matrix.rust-target }}
+          targets: ${{ matrix.target }}
 
-      - name: Rust cache
-        uses: swatinem/rust-cache@v2
+      - uses: swatinem/rust-cache@v2
         with:
           workspaces: |
             './backend/rust-backend -> target'
             './src-tauri -> target'
           key: ${{ matrix.target }}
 
-      - name: Prepare Git
-        run: |
-          mkdir -p build
-
-      - name: Download Backend Artifact
+      - name: Download Frontend Build
         uses: actions/download-artifact@v4
         with:
-          name: backend-${{ matrix.target }}
-          path: build/
+          name: rust-frontend-build
+          path: backend/build/
 
-      - name: Make Backend Executable (Unix)
-        if: runner.os != 'Windows'
+      - name: Install Linux Dependencies
+        if: runner.os == 'Linux'
         run: |
-          chmod +x build/open-webui-lite-${{ matrix.target }}
-          # Rename to match tauri.conf.json externalBin
-          cp build/open-webui-lite-${{ matrix.target }} build/open-webui-lite
+          sudo apt-get update
+          if [ "${{ matrix.target }}" = "aarch64-unknown-linux-gnu" ]; then
+            sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
+            sudo dpkg --add-architecture arm64
+            sudo apt-get update
+            sudo apt-get install -y libwebkit2gtk-4.1-dev:arm64 libappindicator3-dev:arm64 librsvg2-dev:arm64 patchelf
+          else
+            sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+          fi
 
-      - name: Copy Backend Executable (Windows)
+      - name: Build Backend (Unix)
+        if: runner.os != 'Windows'
+        env:
+          CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: aarch64-linux-gnu-gcc
+        run: |
+          mkdir -p build
+          cd backend/rust-backend
+          cargo fetch --target ${{ matrix.target }}
+          cargo build --release --target ${{ matrix.target }}
+          cp target/${{ matrix.target }}/release/open-webui-rust ../../build/open-webui-lite-${{ matrix.target }}
+
+      - name: Build Backend (Windows)
         if: runner.os == 'Windows'
         run: |
-          copy build\open-webui-lite-${{ matrix.target }}.exe build\open-webui-lite.exe
-
-      - name: Prepare Desktop
-        run: |
-          cd src-tauri
-          cargo fetch --target ${{ matrix.rust-target }}
+          mkdir build
+          cd backend/rust-backend
+          cargo build --release --target ${{ matrix.target }}
+          copy target/${{ matrix.target }}/release/open-webui-rust.exe ..\..\build\open-webui-lite-${{ matrix.target }}.exe
 
       - name: Build Desktop (Unix)
         if: runner.os != 'Windows'
@@ -220,63 +125,44 @@ jobs:
           CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: aarch64-linux-gnu-gcc
           PKG_CONFIG_SYSROOT_DIR: /usr/aarch64-linux-gnu
         run: |
-          cargo tauri build --target ${{ matrix.rust-target }}
+          cd src-tauri
+          cargo fetch --target ${{ matrix.target }}
+          cd ..
+          cargo tauri build --target ${{ matrix.target }}
 
       - name: Build Desktop (Windows)
         if: runner.os == 'Windows'
         run: |
-          cargo tauri build --target ${{ matrix.rust-target }}
+          cd src-tauri
+          cargo fetch --target ${{ matrix.target }}
+          cd ..
+          cargo tauri build --target ${{ matrix.target }}
 
-      - name: Upload Desktop Artifacts (Linux)
-        if: matrix.platform == 'ubuntu-22.04'
+      - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: desktop-${{ matrix.target }}
+          name: build-${{ matrix.target }}
           path: |
-            src-tauri/target/${{ matrix.rust-target }}/release/bundle/deb/*.deb
-            src-tauri/target/${{ matrix.rust-target }}/release/bundle/rpm/*.rpm
-            src-tauri/target/${{ matrix.rust-target }}/release/bundle/appimage/*.AppImage
-          if-no-files-found: error
-
-      - name: Upload Desktop Artifacts (macOS)
-        if: matrix.platform == 'macos-latest'
-        uses: actions/upload-artifact@v4
-        with:
-          name: desktop-${{ matrix.target }}
-          path: |
-            src-tauri/target/${{ matrix.rust-target }}/release/bundle/dmg/*.dmg
-            src-tauri/target/${{ matrix.rust-target }}/release/bundle/macos/*.app
-          if-no-files-found: error
-
-      - name: Upload Desktop Artifacts (Windows)
-        if: matrix.platform == 'windows-latest'
-        uses: actions/upload-artifact@v4
-        with:
-          name: desktop-${{ matrix.target }}
-          path: |
-            src-tauri/target/${{ matrix.rust-target }}/release/bundle/nsis/*.exe
-            src-tauri/target/${{ matrix.rust-target }}/release/bundle/msi/*.msi
+            build/open-webui-lite-${{ matrix.target }}*
+            src-tauri/target/${{ matrix.target }}/release/bundle/**/*
           if-no-files-found: error
 
   release:
-    needs: [build-backend, build-desktop]
+    needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: write
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Download all artifacts
+      - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
           path: artifacts
+          pattern: build-*
 
-      - name: Display structure of downloaded files
-        run: ls -R artifacts
-
-      - name: Determine release type and tag
+      - name: Determine Release Type
         id: release_info
         run: |
           if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
@@ -289,45 +175,17 @@ jobs:
             echo "prerelease=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: Create/Update Dev Release
-        if: steps.release_info.outputs.is_release == 'false'
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ steps.release_info.outputs.tag_name }}
-          name: Development Build (${{ steps.release_info.outputs.tag_name }})
-          body: |
-            🚀 Automated development build from commit ${{ github.sha }}
-
-            **⚠️ This is a pre-release development build and may be unstable.**
-
-            ### Changes
-            - Latest changes from main branch
-
-            ### Build Information
-            - Commit: ${{ github.sha }}
-            - Branch: ${{ github.ref_name }}
-            - Build Date: ${{ github.event.head_commit.timestamp }}
-          files: |
-            artifacts/backend-*/*
-            artifacts/desktop-*/*
-          prerelease: true
-          draft: false
-          fail_on_unmatched_files: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Create Release
-        if: steps.release_info.outputs.is_release == 'true'
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.release_info.outputs.tag_name }}
-          name: Release ${{ steps.release_info.outputs.tag_name }}
+          name: ${{ steps.release_info.outputs.is_release == 'true' && format('Release {0}', steps.release_info.outputs.tag_name) || format('Development Build ({0})', steps.release_info.outputs.tag_name) }}
           body: |
-            🎉 Release ${{ steps.release_info.outputs.tag_name }}
+            ${{ steps.release_info.outputs.is_release == 'true' && '🎉' || '🚀' }} ${{ steps.release_info.outputs.is_release == 'true' && format('Release {0}', steps.release_info.outputs.tag_name) || format('Automated development build from commit {0}', github.sha) }}
 
-            ### Download
+            ${{ steps.release_info.outputs.is_release == 'false' && '**⚠️ This is a pre-release development build and may be unstable.**' || '' }}
 
-            #### Backend Server
+            ### Backend Server
             - Linux x86_64: `open-webui-lite-x86_64-unknown-linux-gnu`
             - Linux ARM64: `open-webui-lite-aarch64-unknown-linux-gnu`
             - macOS Intel: `open-webui-lite-x86_64-apple-darwin`
@@ -335,35 +193,12 @@ jobs:
             - Windows x86_64: `open-webui-lite-x86_64-pc-windows-msvc.exe`
             - Windows ARM64: `open-webui-lite-aarch64-pc-windows-msvc.exe`
 
-            #### Desktop Application
-            - Linux x86_64: `.deb`, `.rpm`, `.AppImage`
-            - Linux ARM64: `.deb`, `.rpm`, `.AppImage`
-            - macOS Intel: `.dmg`, `.app`
-            - macOS Apple Silicon: `.dmg`, `.app`
-            - Windows x86_64: `.exe` (NSIS installer), `.msi`
-            - Windows ARM64: `.exe` (NSIS installer), `.msi`
-
-            ### Installation
-
-            **Backend Server:**
-            ```bash
-            # Linux/macOS
-            chmod +x open-webui-lite-*
-            ./open-webui-lite-*
-
-            # Windows
-            open-webui-lite-*.exe
-            ```
-
-            **Desktop Application:**
-            - Install the appropriate package for your platform
-
-            ### What's Changed
-            See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for details.
-          files: |
-            artifacts/backend-*/*
-            artifacts/desktop-*/*
-          prerelease: false
+            ### Desktop Application
+            - Linux: `.deb`, `.rpm`
+            - macOS: `.dmg`, `.app`
+            - Windows: `.exe`, `.msi`
+          files: artifacts/build-*/**/*
+          prerelease: ${{ steps.release_info.outputs.prerelease }}
           draft: false
           fail_on_unmatched_files: false
         env:
