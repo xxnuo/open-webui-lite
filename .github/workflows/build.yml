@@ -18,16 +18,35 @@ jobs:
   # Build rust frontend once and cache it
   build-rust-frontend:
     runs-on: ubuntu-latest
+    outputs:
+      cache-hit: ${{ steps.cache-frontend.outputs.cache-hit }}
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
 
+      - name: Generate Frontend Cache Key
+        id: frontend-hash
+        run: |
+          HASH=$(find backend/src backend/static backend/package.json backend/bun.lock backend/vite.config.ts backend/svelte.config.js backend/tailwind.config.js -type f -exec sha256sum {} \; | sort | sha256sum | cut -d' ' -f1)
+          echo "hash=$HASH" >> $GITHUB_OUTPUT
+
+      - name: Cache Frontend Build
+        id: cache-frontend
+        uses: actions/cache@v4
+        with:
+          path: backend/build/
+          key: frontend-build-${{ steps.frontend-hash.outputs.hash }}
+          restore-keys: |
+            frontend-build-
+
       - uses: oven-sh/setup-bun@v1
+        if: steps.cache-frontend.outputs.cache-hit != 'true'
         with:
           bun-version: latest
 
       - name: Build Frontend
+        if: steps.cache-frontend.outputs.cache-hit != 'true'
         run: |
           cd backend
           bun install
