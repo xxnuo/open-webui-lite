@@ -17,6 +17,8 @@
   </h1>
 </div>
 
+<img src="./assets/icon.png" alt="Open WebUI Lite" align="right" height="64">
+
 [English](README.md) | [中文](README.zh.md)
 
 Open WebUI Lite, a lightweight implementation of Open WebUI
