@@ -1,5 +1,5 @@
 <div align="right">
-  <img src="./assets/banner.png" alt="Open WebUI Lite" height="50%">
+  <img src="./assets/banner.png" alt="Open WebUI Lite" height="100">
 </div>
 
 # Open WebUI Lite
