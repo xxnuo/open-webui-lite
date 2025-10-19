@@ -5,6 +5,8 @@ prepare:
 	cd frontend && bun install
 	cd backend && bun install
 	cd backend/rust-backend && cargo fetch
+	cd app && bun install
+	cd app/src-tauri && cargo fetch
 	mkdir -p build
 
 build-frontend:
