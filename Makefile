@@ -8,10 +8,10 @@ prepare:
 build-frontend:
 	cd frontend && bun run build
 
-build-backend:
+build-backend: build-frontend
 	cd backend/rust-backend && cargo build --release
 
-build: build-frontend build-backend
+build: build-backend
 
 run-backend:
 	cd backend/rust-backend && cargo run
