@@ -1,4 +1,4 @@
-# Open WebUI Slim
+# Open WebUI Lite
 
 [English](README.md) | [中文](README.zh.md)
 

@@ -1,8 +1,8 @@
-# Open WebUI Slim
+# Open WebUI Lite
 
 [English](README.md) | [中文](README.zh.md)
 
-Open WebUI Slim, a lightweight implementation of Open WebUI
+Open WebUI Lite, a lightweight implementation of Open WebUI
 
 ## Features
 
