@@ -2,11 +2,13 @@
 
 prepare:
 	git submodule update --init --recursive
-	cd frontend && bun install
+	# cd frontend && bun install
+	cd backend && bun install
 	cd backend/rust-backend && cargo fetch
 
 build-frontend:
-	cd frontend && bun run build
+	# cd frontend && bun run build
+	cd backend && bun run build
 
 build-backend: build-frontend
 	mkdir -p build
