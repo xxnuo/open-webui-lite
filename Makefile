@@ -25,3 +25,6 @@ build-backend-slim: build-frontend-slim
 
 run-slim:
 	cd backend/rust-backend && cargo run --no-default-features
+
+run:
+	cd backend/rust-backend && cargo run
