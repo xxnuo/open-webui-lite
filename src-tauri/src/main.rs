@@ -22,7 +22,7 @@ fn send_shutdown_command(process: &mut CommandChild) -> Result<(), String> {
 }
 
 /// 强制终止 sidecar 进程
-fn kill_process(process: &mut CommandChild) {
+fn kill_process(process: CommandChild) {
     if let Err(e) = process.kill() {
         eprintln!("[tauri] Failed to kill sidecar process: {}", e);
     } else {
@@ -52,7 +52,7 @@ fn spawn_and_monitor_sidecar(app_handle: tauri::AppHandle) -> Result<(), String>
     // 创建并启动 sidecar 进程
     let sidecar_command = app_handle
         .shell()
-        .sidecar("open-webui-lite-sidecar")
+        .sidecar("open-webui-lite")
         .map_err(|e| format!("Failed to create sidecar command: {}", e))?
         .env("PORT", port.to_string());
 
@@ -193,7 +193,7 @@ fn main() {
                                 Ok(_) => println!("[tauri] Sent shutdown command to sidecar"),
                                 Err(e) => {
                                     eprintln!("[tauri] Failed to send shutdown command: {}", e);
-                                    kill_process(&mut process);
+                                    kill_process(process);
                                 }
                             }
                         }
