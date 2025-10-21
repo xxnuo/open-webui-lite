@@ -1,0 +1,6 @@
+[submodule "backend"]
+	path = backend
+	url = https://github.com/xxnuo/open-webui-rust.git
+[submodule "frontend"]
+	path = frontend
+	url = https://github.com/xxnuo/open-webui.git
