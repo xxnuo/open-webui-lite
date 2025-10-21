@@ -9,7 +9,9 @@ build-frontend:
 	cd frontend && bun run build
 
 build-backend: build-frontend
+	mkdir -p build
 	cd backend/rust-backend && cargo build --release
+	cp backend/rust-backend/target/release/open-webui-rust build/open-webui-slim
 
 build: build-backend
 
