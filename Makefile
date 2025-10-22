@@ -11,7 +11,7 @@ build-frontend:
 build-backend: build-frontend
 	mkdir -p build
 	cd backend/rust-backend && cargo build --release
-	cp backend/rust-backend/target/release/open-webui-rust build/open-webui-slim
+	cp backend/rust-backend/target/release/open-webui-rust build/open-webui-lite
 
 build: build-backend
 
