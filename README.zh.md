@@ -23,8 +23,7 @@ Open WebUI 轻量版，一个轻量级的 Open WebUI 实现
 
 #### 改动:
 
-- 保留核心功能
-- 移除了不必要的内容
+- 适配 Rust Lite 后端
 
 ### Rust 后端
 
@@ -36,6 +35,5 @@ Open WebUI 轻量版，一个轻量级的 Open WebUI 实现
 
 - 添加了 SQLite 数据库的支持
 - 移除了对 Postgres 数据库的依赖
-- 移除了对 Redis 的依赖
 
 > 有能力的朋友可以去[赞助支持大佬](https://github.com/knoxchat/open-webui-rust)开发的后端。
