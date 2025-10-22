@@ -2,13 +2,19 @@
 
 BUILD_HOST := $(shell rustc -Vv | grep host | cut -d' ' -f2)
 
-prepare:
+prepare-git:
 	git submodule update --init --recursive
+	mkdir -p build
+
+prepare-frontend:
 	cd frontend && bun install
+
+prepare-backend:
 	cd backend && bun install
 	cd backend/rust-backend && cargo fetch
+
+prepare-desktop:
 	cd src-tauri && cargo fetch
-	mkdir -p build
 
 build-frontend:
 	cd frontend && bun run build
