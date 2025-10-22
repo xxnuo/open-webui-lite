@@ -32,10 +32,10 @@ run-backend:
 run-backend-slim:
 	cd backend/rust-backend && cargo run --no-default-features
 
-build-sidecar:
-	$(MAKE) build-backend
-	cp build/open-webui-lite-${BUILD_HOST} build/open-webui-lite-sidecar-${BUILD_HOST}
-
-run-app:
-	if [ ! -f build/open-webui-lite-sidecar-${BUILD_HOST} ]; then $(MAKE) build-sidecar; fi
+run-desktop:
+	if [ ! -f build/open-webui-lite-${BUILD_HOST} ]; then $(MAKE) build-backend; fi
 	cargo tauri dev
+
+build-desktop:
+	if [ ! -f build/open-webui-lite-${BUILD_HOST} ]; then $(MAKE) build-backend; fi
+	cargo tauri build
