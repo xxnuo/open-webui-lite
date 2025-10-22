@@ -13,7 +13,7 @@ build-frontend:
 build-frontend-slim:
 	cd backend && bun run build
 
-build-backend: build-frontend
+build-backend: build-frontend-slim
 	cd backend/rust-backend && cargo build --release
 	cp backend/rust-backend/target/release/open-webui-rust build/open-webui-lite
 
