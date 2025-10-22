@@ -15,5 +15,5 @@ build-backend: build-frontend
 
 build: build-backend
 
-run-backend:
+run:
 	cd backend/rust-backend && cargo run
