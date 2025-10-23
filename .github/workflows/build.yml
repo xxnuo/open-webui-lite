@@ -201,6 +201,24 @@ jobs:
           path: artifacts
           pattern: build-*
 
+      - name: Organize Release Assets
+        run: |
+          mkdir -p release-assets
+
+          # Copy backend binaries
+          find artifacts -name "open-webui-lite-*" -type f -exec cp {} release-assets/ \;
+
+          # Copy desktop app packages (only the final packages, not intermediate files)
+          find artifacts -name "*.deb" -type f -exec cp {} release-assets/ \;
+          find artifacts -name "*.rpm" -type f -exec cp {} release-assets/ \;
+          find artifacts -name "*.dmg" -type f -exec cp {} release-assets/ \;
+          find artifacts -name "*.msi" -type f -exec cp {} release-assets/ \;
+          find artifacts -name "*-setup.exe" -type f -exec cp {} release-assets/ \;
+          find artifacts -name "*.app.tar.gz" -type f -exec cp {} release-assets/ \;
+          find artifacts -name "*.AppImage" -type f -exec cp {} release-assets/ \;
+
+          ls -lh release-assets/
+
       - name: Determine Release Type
         id: release_info
         run: |
@@ -236,7 +254,7 @@ jobs:
             - Linux: `.deb`, `.rpm`
             - macOS: `.dmg`, `.app`
             - Windows: `.exe`, `.msi`
-          files: artifacts/build-*/**/*
+          files: release-assets/*
           prerelease: ${{ steps.release_info.outputs.prerelease }}
           draft: false
           fail_on_unmatched_files: false
