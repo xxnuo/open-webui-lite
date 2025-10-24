@@ -1,6 +1,6 @@
-<img src="./assets/banner.png" alt="Open WebUI Lite" align="center" height="128">
-
 # Open WebUI Lite
+
+<img src="./assets/banner.png" alt="Open WebUI Lite" align="right" height="128">
 
 [English](README.md) | [中文](README.zh.md)
 
