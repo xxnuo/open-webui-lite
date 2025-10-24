@@ -1,4 +1,4 @@
-<div align="left">
+<div align="center">
   <img src="./assets/banner.png" alt="Open WebUI Lite" height="100">
 </div>
 
