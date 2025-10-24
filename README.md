@@ -2,6 +2,20 @@
   <img src="./assets/banner.png" alt="Open WebUI Lite" height="100">
 </div>
 
+<div align="center">
+
+[![GitHub Stars](https://img.shields.io/github/stars/xxnuo/open-webui-lite?style=for-the-badge&logo=github&color=yellow)](https://github.com/xxnuo/open-webui-lite/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/xxnuo/open-webui-lite?style=for-the-badge&logo=github&color=blue)](https://github.com/xxnuo/open-webui-lite/network/members)
+[![GitHub Release](https://img.shields.io/github/v/release/xxnuo/open-webui-lite?style=for-the-badge&logo=github&color=green)](https://github.com/xxnuo/open-webui-lite/releases/latest)
+[![GitHub Downloads](https://img.shields.io/github/downloads/xxnuo/open-webui-lite/total?style=for-the-badge&logo=github&color=orange)](https://github.com/xxnuo/open-webui-lite/releases)
+
+[![Build Status](https://img.shields.io/github/actions/workflow/status/xxnuo/open-webui-lite/build.yml?style=for-the-badge&logo=github-actions&logoColor=white)](https://github.com/xxnuo/open-webui-lite/actions)
+[![License](https://img.shields.io/github/license/xxnuo/open-webui-lite?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](https://github.com/xxnuo/open-webui-lite/blob/main/LICENSE)
+[![Rust](https://img.shields.io/badge/Rust-81.7%25-orange?style=for-the-badge&logo=rust&logoColor=white)](https://www.rust-lang.org/)
+[![GitHub Issues](https://img.shields.io/github/issues/xxnuo/open-webui-lite?style=for-the-badge&logo=github&color=red)](https://github.com/xxnuo/open-webui-lite/issues)
+
+</div>
+
 # Open WebUI Lite
 
 [English](README.md) | [中文](README.zh.md)
