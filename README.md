@@ -1,6 +1,6 @@
-# Open WebUI Lite
-
 <img src="./assets/banner.png" alt="Open WebUI Lite" align="right" height="128">
+
+# Open WebUI Lite
 
 [English](README.md) | [中文](README.zh.md)
 
