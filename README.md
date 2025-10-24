@@ -17,7 +17,7 @@
   </h1>
 </div>
 
-<img src="./assets/icon.png" alt="Open WebUI Lite" align="right" height="64">
+<img src="./assets/icon.png" alt="Open WebUI Lite" align="right" height="128">
 
 [English](README.md) | [中文](README.zh.md)
 
