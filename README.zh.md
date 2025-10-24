@@ -14,7 +14,11 @@
 
 </div>
 
-# Open WebUI Lite
+<div align="center">
+  <h1>
+    Open WebUI Lite
+  </h1>
+</div>
 
 [English](README.md) | [中文](README.zh.md)
 
