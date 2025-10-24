@@ -1,12 +1,8 @@
 <div align="right">
-  <img src="./assets/banner.png" alt="Open WebUI Lite" height="128">
+  <img src="./assets/banner.png" alt="Open WebUI Lite">
 </div>
 
-<h1 align="center">
-  <img src="./assets/icon.png" alt="icon" height="48">
-  <br>
-  Open WebUI Lite
-</h1>
+# Open WebUI Lite
 
 [English](README.md) | [中文](README.zh.md)
 
