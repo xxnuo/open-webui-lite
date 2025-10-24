@@ -205,10 +205,15 @@ jobs:
         run: |
           mkdir -p release-assets
 
-          # Copy backend binaries
-          find artifacts -name "open-webui-lite-*" -type f -exec cp {} release-assets/ \;
+          # Copy backend binaries (executable files only, not desktop bundles)
+          find artifacts/build-x86_64-unknown-linux-gnu -name "open-webui-lite-x86_64-unknown-linux-gnu" -type f -exec cp {} release-assets/ \;
+          find artifacts/build-aarch64-unknown-linux-gnu -name "open-webui-lite-aarch64-unknown-linux-gnu" -type f -exec cp {} release-assets/ \;
+          find artifacts/build-x86_64-apple-darwin -name "open-webui-lite-x86_64-apple-darwin" -type f -exec cp {} release-assets/ \;
+          find artifacts/build-aarch64-apple-darwin -name "open-webui-lite-aarch64-apple-darwin" -type f -exec cp {} release-assets/ \;
+          find artifacts/build-x86_64-pc-windows-msvc -name "open-webui-lite-x86_64-pc-windows-msvc.exe" -type f -exec cp {} release-assets/ \;
+          find artifacts/build-aarch64-pc-windows-msvc -name "open-webui-lite-aarch64-pc-windows-msvc.exe" -type f -exec cp {} release-assets/ \;
 
-          # Copy desktop app packages (only the final packages, not intermediate files)
+          # Copy desktop app packages (only the final installer packages)
           find artifacts -name "*.deb" -type f -exec cp {} release-assets/ \;
           find artifacts -name "*.rpm" -type f -exec cp {} release-assets/ \;
           find artifacts -name "*.dmg" -type f -exec cp {} release-assets/ \;
@@ -232,28 +237,83 @@ jobs:
             echo "prerelease=true" >> $GITHUB_OUTPUT
           fi
 
+      - name: Generate Release Body
+        id: generate_body
+        run: |
+          TAG="${{ steps.release_info.outputs.tag_name }}"
+          REPO="${{ github.repository }}"
+          IS_RELEASE="${{ steps.release_info.outputs.is_release }}"
+
+          # Generate title
+          if [ "$IS_RELEASE" == "true" ]; then
+            TITLE="🎉 Release ${TAG}"
+            WARNING=""
+          else
+            TITLE="🚀 Automated development build from commit ${{ github.sha }}"
+            WARNING="**⚠️ This is a pre-release development build and may be unstable.**"
+          fi
+
+          # Generate body content
+          cat > release_body.md << EOF
+          ${TITLE}
+
+          ${WARNING}
+
+          ## 📦 Desktop Application Installers
+
+          ### 🪟 Windows
+          [![Windows x64](https://img.shields.io/badge/Windows-x64-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/${REPO}/releases/download/${TAG}/open-webui-lite-desktop_0.1.0_x64-setup.exe)
+          [![Windows ARM64](https://img.shields.io/badge/Windows-ARM64-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/${REPO}/releases/download/${TAG}/open-webui-lite-desktop_0.1.0_arm64-setup.exe)
+
+          - **Installer (x64)**: \`open-webui-lite-desktop_0.1.0_x64-setup.exe\` | **MSI**: \`open-webui-lite-desktop_0.1.0_x64_en-US.msi\`
+          - **Installer (ARM64)**: \`open-webui-lite-desktop_0.1.0_arm64-setup.exe\` | **MSI**: \`open-webui-lite-desktop_0.1.0_arm64_en-US.msi\`
+
+          ### 🍎 macOS
+          [![macOS Intel](https://img.shields.io/badge/macOS-Intel-000000?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/${REPO}/releases/download/${TAG}/open-webui-lite-desktop_0.1.0_x64.dmg)
+          [![macOS Apple Silicon](https://img.shields.io/badge/macOS-Apple_Silicon-000000?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/${REPO}/releases/download/${TAG}/open-webui-lite-desktop_0.1.0_aarch64.dmg)
+
+          - **Intel (x64)**: \`open-webui-lite-desktop_0.1.0_x64.dmg\`
+          - **Apple Silicon (ARM64)**: \`open-webui-lite-desktop_0.1.0_aarch64.dmg\`
+
+          ### 🐧 Linux
+          [![Linux x64](https://img.shields.io/badge/Linux-x64-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://github.com/${REPO}/releases/download/${TAG}/open-webui-lite-desktop_0.1.0_amd64.deb)
+          [![Linux ARM64](https://img.shields.io/badge/Linux-ARM64-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://github.com/${REPO}/releases/download/${TAG}/open-webui-lite-desktop_0.1.0_arm64.deb)
+
+          - **Debian/Ubuntu (x64)**: \`open-webui-lite-desktop_0.1.0_amd64.deb\`
+          - **Debian/Ubuntu (ARM64)**: \`open-webui-lite-desktop_0.1.0_arm64.deb\`
+          - **RedHat/Fedora (x64)**: \`open-webui-lite-desktop-0.1.0-1.x86_64.rpm\`
+          - **RedHat/Fedora (ARM64)**: \`open-webui-lite-desktop-0.1.0-1.aarch64.rpm\`
+
+          ---
+
+          ## 🖥️ Backend Server (CLI)
+
+          ### Linux
+          - **x86_64**: \`open-webui-lite-x86_64-unknown-linux-gnu\`
+          - **ARM64**: \`open-webui-lite-aarch64-unknown-linux-gnu\`
+
+          ### macOS
+          - **Intel**: \`open-webui-lite-x86_64-apple-darwin\`
+          - **Apple Silicon**: \`open-webui-lite-aarch64-apple-darwin\`
+
+          ### Windows
+          - **x86_64**: \`open-webui-lite-x86_64-pc-windows-msvc.exe\`
+          - **ARM64**: \`open-webui-lite-aarch64-pc-windows-msvc.exe\`
+          EOF
+
+          # Set multiline output
+          {
+            echo "body<<EOFMARKER"
+            cat release_body.md
+            echo "EOFMARKER"
+          } >> $GITHUB_OUTPUT
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.release_info.outputs.tag_name }}
           name: ${{ steps.release_info.outputs.is_release == 'true' && format('Release {0}', steps.release_info.outputs.tag_name) || format('Development Build ({0})', steps.release_info.outputs.tag_name) }}
-          body: |
-            ${{ steps.release_info.outputs.is_release == 'true' && '🎉' || '🚀' }} ${{ steps.release_info.outputs.is_release == 'true' && format('Release {0}', steps.release_info.outputs.tag_name) || format('Automated development build from commit {0}', github.sha) }}
-
-            ${{ steps.release_info.outputs.is_release == 'false' && '**⚠️ This is a pre-release development build and may be unstable.**' || '' }}
-
-            ### Backend Server
-            - Linux x86_64: `open-webui-lite-x86_64-unknown-linux-gnu`
-            - Linux ARM64: `open-webui-lite-aarch64-unknown-linux-gnu`
-            - macOS Intel: `open-webui-lite-x86_64-apple-darwin`
-            - macOS Apple Silicon: `open-webui-lite-aarch64-apple-darwin`
-            - Windows x86_64: `open-webui-lite-x86_64-pc-windows-msvc.exe`
-            - Windows ARM64: `open-webui-lite-aarch64-pc-windows-msvc.exe`
-
-            ### Desktop Application
-            - Linux: `.deb`, `.rpm`
-            - macOS: `.dmg`, `.app`
-            - Windows: `.exe`, `.msi`
+          body: ${{ steps.generate_body.outputs.body }}
           files: release-assets/*
           prerelease: ${{ steps.release_info.outputs.prerelease }}
           draft: false
