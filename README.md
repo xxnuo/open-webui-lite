@@ -4,13 +4,10 @@
 
 <div align="center">
 
-[![GitHub Stars](https://img.shields.io/github/stars/xxnuo/open-webui-lite?style=for-the-badge&logo=github&color=yellow)](https://github.com/xxnuo/open-webui-lite/stargazers)
-
-[![GitHub Release](https://img.shields.io/github/v/release/xxnuo/open-webui-lite?style=for-the-badge&logo=github&color=green)](https://github.com/xxnuo/open-webui-lite/releases/latest)
-
-[![GitHub Downloads](https://img.shields.io/github/downloads/xxnuo/open-webui-lite/total?style=for-the-badge&logo=github&color=orange)](https://github.com/xxnuo/open-webui-lite/releases)
-
-[![Build Status](https://img.shields.io/github/actions/workflow/status/xxnuo/open-webui-lite/build.yml?style=for-the-badge&logo=github-actions&logoColor=white)](https://github.com/xxnuo/open-webui-lite/actions)
+[![GitHub Stars](https://img.shields.io/github/stars/xxnuo/open-webui-lite?style=flat-square&logo=github&color=yellow)](https://github.com/xxnuo/open-webui-lite/stargazers)
+[![GitHub Release](https://img.shields.io/github/v/release/xxnuo/open-webui-lite?style=flat-square&logo=github&color=green)](https://github.com/xxnuo/open-webui-lite/releases/latest)
+[![GitHub Downloads](https://img.shields.io/github/downloads/xxnuo/open-webui-lite/total?style=flat-square&logo=github&color=orange)](https://github.com/xxnuo/open-webui-lite/releases)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/xxnuo/open-webui-lite/build.yml?style=flat-square&logo=github-actions&logoColor=white)](https://github.com/xxnuo/open-webui-lite/actions)
 
 </div>
 
