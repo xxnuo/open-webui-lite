@@ -1,0 +1,4 @@
+/build
+.env
+/bin
+open-webui-lite.service
