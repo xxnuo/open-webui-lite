@@ -1,0 +1,17 @@
+[Unit]
+Description=Open WebUI Lite Service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/path/to/open-webui-lite
+Environment="PORT=10084"
+ExecStart=/path/to/open-webui-lite/bin/open-webui-lite-x86_64-unknown-linux-gnu
+Restart=on-failure
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target
