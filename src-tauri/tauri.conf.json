@@ -3,6 +3,11 @@
   "productName": "open-webui-lite-desktop",
   "version": "0.1.0",
   "identifier": "com.github.xxnuo.owld",
+  "build": {
+    "beforeDevCommand": "",
+    "beforeBuildCommand": "",
+    "frontendDist": "./static"
+  },
   "app": {
     "withGlobalTauri": true,
     "windows": [

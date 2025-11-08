@@ -96,7 +96,10 @@ fn spawn_and_monitor_sidecar(app_handle: tauri::AppHandle) -> Result<(), String>
                 }
                 // 处理进程终止事件
                 CommandEvent::Terminated(payload) => {
-                    println!("[tauri] Sidecar process terminated with code: {:?}", payload.code);
+                    println!(
+                        "[tauri] Sidecar process terminated with code: {:?}",
+                        payload.code
+                    );
 
                     // 清除存储的子进程
                     if let Some(state) =
@@ -161,6 +164,7 @@ fn start_sidecar(app_handle: tauri::AppHandle) -> Result<String, String> {
 
 fn main() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_websocket::init())
         .plugin(tauri_plugin_shell::init())
         .setup(|app| {
             // 初始化 sidecar 进程状态
