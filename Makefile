@@ -6,6 +6,13 @@ prepare-git:
 	git submodule update --init --recursive
 	mkdir -p build
 
+
+prepare-frontend:
+	cd backend && bun install
+
+prepare-frontend-svelte:
+	cd backend/svelte-frontend && bun install
+
 prepare-backend:
 	cd backend && bun install
 	cd backend/rust-backend && cargo fetch
@@ -13,14 +20,19 @@ prepare-backend:
 prepare-desktop:
 	cd src-tauri && cargo fetch
 
-build-backend: prepare-backend
+build-frontend: prepare-frontend
 	cd backend && bun run build
+
+build-frontend-svelte: prepare-frontend-svelte
+	cd backend/svelte-frontend && bun run build
+
+# backend/rust-backend/src/static_files.rs
+build-backend:
 	cd backend/rust-backend && cargo build --release
 	cp backend/rust-backend/target/release/open-webui-rust build/open-webui-lite-${BUILD_HOST}
 
 # Without static frontend
-build-backend-slim: prepare-backend
-	cd backend && bun run build
+build-backend-slim:
 	cd backend/rust-backend && cargo build --release --no-default-features
 	cp backend/rust-backend/target/release/open-webui-rust build/open-webui-lite-slim-${BUILD_HOST}
 
