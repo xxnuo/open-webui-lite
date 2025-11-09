@@ -25,24 +25,18 @@ Open WebUI Lite, a lightweight implementation of Open WebUI
 
 ## Features
 
-- Single executable download to get started
+- A desktop client with a single executable download to get started
 - Use original frontend
-- No Docker, Python, PostgreSQL, Redis dependencies
-- Lower memory footprint
-- Lower hardware requirements
-- Better performance with Rust backend
-  - Faster response time 10-50x
-  - Lower memory usage 70%
+- No Docker, Python, PostgreSQL, Redis dependencies required
+- Lower memory footprint compared to original version (much lower)
+- Lower hardware requirements compared to original version
+- Better performance with Rust backend server compared to original version
 
 ## Dependencies
 
-### Original Frontend
+### Original Project
 
 > [open-webui/open-webui](https://github.com/open-webui/open-webui)
-
-#### Changes:
-
-- Adapt to Rust Lite backend
 
 ### Rust Backend
 
@@ -54,5 +48,6 @@ Based on [knox's](https://github.com/knoxchat) Rust backend
 
 - Add SQLite database support
 - Remove Postgres database dependencies
+- Remove Redis dependencies
 
 > You can support [knox's](https://github.com/knoxchat/open-webui-rust) backend development if you find it useful.

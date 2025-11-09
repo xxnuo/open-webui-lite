@@ -25,24 +25,18 @@ Open WebUI 轻量版，一个轻量级的 Open WebUI 实现
 
 ## 特性
 
-- 下载一个可执行文件即可使用
+- 下载一个可执行文件即可使用的桌面客户端
 - 使用原版前端
-- 无需 Docker、Python、PostgreSQL、Redis 等依赖环境
-- 较原版内存占用更低
-- 配置要求更低
+- 无需安装 Docker、Python、PostgreSQL、Redis 等外部依赖环境的服务端
+- 较原版内存占用更低(很多)
+- 较原版配置要求更低
 - 使用 Rust 后端性能更优
-  - 更快的响应时间 10-50 倍
-  - 更低的内存使用率 70%
 
 ## 依赖库
 
-### 原版前端
+### 原版项目
 
 > [open-webui/open-webui](https://github.com/open-webui/open-webui)
-
-#### 改动:
-
-- 适配 Rust Lite 后端
 
 ### Rust 后端
 
@@ -54,5 +48,6 @@ Open WebUI 轻量版，一个轻量级的 Open WebUI 实现
 
 - 添加了 SQLite 数据库的支持
 - 移除了对 Postgres 数据库的依赖
+- 移除了对 Redis 的依赖
 
 > 有能力的朋友可以去[赞助支持大佬](https://github.com/knoxchat/open-webui-rust)开发的后端。
