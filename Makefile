@@ -1,4 +1,4 @@
-.PHONY: build build-backend build-frontend build-sidecar prepare run-app
+.PHONY: prepare-git prepare-frontend prepare-frontend-svelte prepare-backend prepare-desktop build-frontend build-frontend-svelte build-backend build-backend-slim run-backend-slim run-backend run-desktop build-desktop
 
 BUILD_HOST := $(shell rustc -Vv | grep host | cut -d' ' -f2)
 
@@ -28,12 +28,12 @@ build-frontend-svelte: prepare-frontend-svelte
 # backend/rust-backend/src/static_files.rs
 build-backend: build-frontend-svelte
 	cd backend/rust-backend && cargo build --release
-	cp backend/rust-backend/target/release/open-webui-rust build/open-webui-lite-${BUILD_HOST}
+	cp backend/rust-backend/target/release/open-webui-rust bin/open-webui-lite-${BUILD_HOST}
 
 # Without static frontend
 build-backend-slim:
 	cd backend/rust-backend && cargo build --release --no-default-features
-	cp backend/rust-backend/target/release/open-webui-rust build/open-webui-lite-slim-${BUILD_HOST}
+	cp backend/rust-backend/target/release/open-webui-rust bin/open-webui-lite-slim-${BUILD_HOST}
 
 # Without static frontend
 run-backend-slim:
@@ -45,5 +45,5 @@ run-backend:
 run-desktop:
 	cargo tauri dev
 
-build-desktop: build-backend
+build-desktop:
 	cargo tauri build

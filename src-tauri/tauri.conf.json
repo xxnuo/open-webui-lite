@@ -32,7 +32,7 @@
       "msi"
     ],
     "externalBin": [
-      "../build/open-webui-lite"
+      "../bin/open-webui-lite"
     ],
     "icon": [
       "icons/32x32.png",
