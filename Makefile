@@ -44,9 +44,7 @@ run-backend:
 	cd backend/rust-backend && cargo run
 
 run-desktop:
-	if [ ! -f build/open-webui-lite-${BUILD_HOST} ]; then $(MAKE) build-backend; fi
 	cargo tauri dev
 
-build-desktop:
-	if [ ! -f build/open-webui-lite-${BUILD_HOST} ]; then $(MAKE) build-backend; fi
+build-desktop: build-backend
 	cargo tauri build
