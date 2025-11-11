@@ -27,7 +27,7 @@ build-frontend-svelte: prepare-frontend-svelte
 	cd backend/svelte-frontend && bun run build
 
 # backend/rust-backend/src/static_files.rs
-build-backend:
+build-backend: build-frontend
 	cd backend/rust-backend && cargo build --release
 	cp backend/rust-backend/target/release/open-webui-rust build/open-webui-lite-${BUILD_HOST}
 
