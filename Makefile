@@ -6,7 +6,6 @@ prepare-git:
 	git submodule update --init --recursive
 	mkdir -p build
 
-
 prepare-frontend:
 	cd backend && bun install
 
