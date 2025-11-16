@@ -57,7 +57,7 @@ update-version:
 	echo "Updating to version: $$NEW_VERSION"; \
 	sed -i.bak "s/^version = \".*\"/version = \"$$NEW_VERSION\"/" src-tauri/Cargo.toml && rm src-tauri/Cargo.toml.bak; \
 	sed -i.bak "s/\"version\": \".*\"/\"version\": \"$$NEW_VERSION\"/" src-tauri/tauri.conf.json && rm src-tauri/tauri.conf.json.bak; \
-	sed -i.bak "s/\"version\": \".*\"/\"version\": \"0.6.32-$$NEW_VERSION\"/" backend/package.json && rm backend/package.json.bak; \
-	sed -i.bak "s/\"version\": \".*\"/\"version\": \"0.6.32-$$NEW_VERSION\"/" backend/svelte-frontend/package.json && rm backend/svelte-frontend/package.json.bak; \
-	sed -i.bak "s/^version = \".*\"/version = \"0.6.32-$$NEW_VERSION\"/" backend/rust-backend/Cargo.toml && rm backend/rust-backend/Cargo.toml.bak; \
+	echo sed -i.bak "s/\"version\": \".*\"/\"version\": \"0.6.32-$$NEW_VERSION\"/" backend/package.json && echo rm backend/package.json.bak; \
+	echo sed -i.bak "s/\"version\": \".*\"/\"version\": \"0.6.32-$$NEW_VERSION\"/" backend/svelte-frontend/package.json && echo rm backend/svelte-frontend/package.json.bak; \
+	sed -i.bak "s/^version = \".*\"/version = \"$$NEW_VERSION\"/" backend/rust-backend/Cargo.toml && rm backend/rust-backend/Cargo.toml.bak; \
 	echo "Version updated successfully to $$NEW_VERSION"
