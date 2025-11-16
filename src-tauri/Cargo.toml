@@ -1,6 +1,6 @@
 [package]
 name = "open-webui-lite-desktop"
-version = "0.9.5-beta2"
+version = "0.9.5"
 description = "Open WebUI Lite Desktop Application"
 authors = ["xxnuo"]
 edition = "2021"
