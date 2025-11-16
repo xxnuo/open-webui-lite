@@ -1,13 +1,13 @@
 [Unit]
-Description=Open WebUI Lite Service
+Description=Open CoreUI Service
 After=network-online.target
 Wants=network-online.target
 
 [Service]
 Type=simple
-WorkingDirectory=/path/to/open-webui-lite
+WorkingDirectory=/path/to/open-coreui
 Environment="PORT=10084"
-ExecStart=/path/to/open-webui-lite/bin/open-webui-lite-x86_64-unknown-linux-gnu
+ExecStart=/path/to/open-coreui/bin/open-coreui-x86_64-unknown-linux-gnu
 Restart=on-failure
 RestartSec=10
 StandardOutput=journal

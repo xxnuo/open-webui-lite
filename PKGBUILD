@@ -1,9 +1,9 @@
-pkgname=open-webui-lite-desktop
+pkgname=open-coreui-desktop
 pkgver=0.1.0
 pkgrel=1
-pkgdesc="Open WebUI Lite Desktop Application"
+pkgdesc="Open CoreUI Desktop Application"
 arch=('x86_64' 'aarch64')
-url="https://github.com/xxnuo/open-webui-lite"
+url="https://github.com/xxnuo/open-coreui"
 license=('LICENSE')
 depends=('cairo' 'desktop-file-utils' 'gdk-pixbuf2' 'glib2' 'gtk3' 'hicolor-icon-theme' 'libsoup' 'pango' 'webkit2gtk-4.1')
 options=('!strip' '!emptydirs')

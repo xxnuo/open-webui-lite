@@ -2535,8 +2535,8 @@ dependencies = [
 ]
 
 [[package]]
-name = "open-webui-lite-desktop"
-version = "0.9.5"
+name = "open-coreui-desktop"
+version = "0.9.6"
 dependencies = [
  "portpicker",
  "serde",

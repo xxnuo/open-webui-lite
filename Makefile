@@ -29,13 +29,13 @@ build-frontend-svelte: prepare-frontend-svelte
 build-backend: build-frontend-svelte
 	cd backend/rust-backend && cargo build --release
 	mkdir -p bin
-	cp backend/rust-backend/target/release/open-webui-rust bin/open-webui-lite-${BUILD_HOST}
+	cp backend/rust-backend/target/release/open-webui-rust bin/open-coreui-${BUILD_HOST}
 
 # Without static frontend
 build-backend-slim:
 	cd backend/rust-backend && cargo build --release --no-default-features
 	mkdir -p bin
-	cp backend/rust-backend/target/release/open-webui-rust bin/open-webui-lite-slim-${BUILD_HOST}
+	cp backend/rust-backend/target/release/open-webui-rust bin/open-coreui-slim-${BUILD_HOST}
 
 # Without static frontend
 run-backend-slim:

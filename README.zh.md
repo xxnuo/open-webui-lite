@@ -1,23 +1,23 @@
 <div align="center">
-  <img src="./assets/banner.png" alt="Open WebUI Lite" height="100">
+  <img src="./assets/banner.png" alt="Open CoreUI" height="100">
 </div>
 
 <div align="center">
 
-[![GitHub Stars](https://img.shields.io/github/stars/xxnuo/open-webui-lite?style=flat-square&logo=github&color=yellow)](https://github.com/xxnuo/open-webui-lite/stargazers)
-[![GitHub Release](https://img.shields.io/github/v/release/xxnuo/open-webui-lite?style=flat-square&logo=github&color=green)](https://github.com/xxnuo/open-webui-lite/releases/latest)
-[![GitHub Downloads](https://img.shields.io/github/downloads/xxnuo/open-webui-lite/total?style=flat-square&logo=github&color=orange)](https://github.com/xxnuo/open-webui-lite/releases)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/xxnuo/open-webui-lite/build.yml?style=flat-square&logo=github-actions&logoColor=white)](https://github.com/xxnuo/open-webui-lite/actions)
+[![GitHub Stars](https://img.shields.io/github/stars/xxnuo/open-coreui?style=flat-square&logo=github&color=yellow)](https://github.com/xxnuo/open-coreui/stargazers)
+[![GitHub Release](https://img.shields.io/github/v/release/xxnuo/open-coreui?style=flat-square&logo=github&color=green)](https://github.com/xxnuo/open-coreui/releases/latest)
+[![GitHub Downloads](https://img.shields.io/github/downloads/xxnuo/open-coreui/total?style=flat-square&logo=github&color=orange)](https://github.com/xxnuo/open-coreui/releases)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/xxnuo/open-coreui/build.yml?style=flat-square&logo=github-actions&logoColor=white)](https://github.com/xxnuo/open-coreui/actions)
 
 </div>
 
 <div align="center">
   <h1>
-    Open WebUI Lite
+    Open CoreUI
   </h1>
 </div>
 
-<img src="./assets/icon.png" alt="Open WebUI Lite" align="right" height="128">
+<img src="./assets/icon.png" alt="Open CoreUI" align="right" height="128">
 
 [English](README.md) | [中文](README.zh.md)
 
@@ -25,8 +25,10 @@ Open WebUI 轻量版，一个轻量级的 Open WebUI 实现
 
 > **⚠️ 早期开发阶段**  
 > 本项目目前处于早期开发阶段，目前仅实现了基本的对话功能，其他功能正在逐步开发中。
+>
+> **这是一个 Open WebUI v0.6.32 的轻量版重写，不是官方版本。**
 
-<img src="./assets/preview.png" alt="Open WebUI Lite Preview">
+<img src="./assets/preview.png" alt="Open CoreUI Preview">
 
 ## 特性
 
@@ -41,7 +43,7 @@ Open WebUI 轻量版，一个轻量级的 Open WebUI 实现
 
 支持 Windows、macOS、Linux 系统，支持 x86_64、aarch64 架构。
 
-前往 [Releases](https://github.com/xxnuo/open-webui-lite/releases/latest) 页面下载适合你系统的版本。
+前往 [Releases](https://github.com/xxnuo/open-coreui/releases/latest) 页面下载适合你系统的版本。
 
 ### 两种客户端类型说明
 
@@ -72,14 +74,14 @@ Open WebUI 轻量版，一个轻量级的 Open WebUI 实现
 > **macOS 用户注意**：如果打开时提示"应用已损坏"等问题，请打开`终端`并执行以下命令：
 > 
 > ```bash
-> sudo xattr -d com.apple.quarantine "/Applications/Open WebUI Lite Desktop.app"
+> sudo xattr -d com.apple.quarantine "/Applications/Open CoreUI Desktop.app"
 > ```
 
 **服务端**：
 1. 下载对应系统的二进制文件
-2. 赋予执行权限（Linux/macOS）：`chmod +x open-webui-lite-*`
-3. 运行：`./open-webui-lite-*`
-4. 在浏览器中访问显示的地址（通常是 `http://localhost:8080`）
+2. 赋予执行权限（Linux/macOS）：`chmod +x open-coreui-*`
+3. 运行：`./open-coreui-*`
+4. 在浏览器中访问显示的地址（通常是 `http://localhost:8168`）
 
 详细的配置选项和环境变量说明请参考 [CLI 文档](CLI.md)。
 
@@ -91,7 +93,7 @@ Open WebUI 轻量版，一个轻量级的 Open WebUI 实现
 
 ### Rust 后端
 
-> [knoxchat/open-webui-rust](https://github.com/knoxchat/open-webui-rust)
+> [xxnuo/open-webui-rust](https://github.com/xxnuo/open-webui-rust)
 
 基于 [knox](https://github.com/knoxchat) 大佬的 Rust 后端实现
 

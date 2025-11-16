@@ -1,9 +1,9 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "Open WebUI Lite Desktop",
-  "version": "0.9.5",
-  "identifier": "com.github.xxnuo.owld",
-  "mainBinaryName": "Open WebUI Lite Desktop",
+  "productName": "Open CoreUI Desktop",
+  "version": "0.9.6",
+  "identifier": "com.github.xxnuo.ocd",
+  "mainBinaryName": "Open CoreUI Desktop",
   "build": {
     "beforeDevCommand": "",
     "beforeBuildCommand": "",
@@ -13,7 +13,7 @@
     "withGlobalTauri": true,
     "windows": [
       {
-        "title": "Open WebUI Lite Desktop",
+        "title": "Open CoreUI Desktop",
         "width": 1440,
         "height": 900
       }
@@ -34,7 +34,7 @@
       "msi"
     ],
     "externalBin": [
-      "../bin/open-webui-lite"
+      "../bin/open-coreui"
     ],
     "icon": [
       "icons/32x32.png",
@@ -48,7 +48,7 @@
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEI5QjA0MTk2NjE3QjA0MzIKUldReUJIdGhsa0d3dWJ0YklGeWdIRzR0QkJkU2lWejdxdzJaY0cyc2JLa2RPd3ZxdVd3dEpadXgK",
       "endpoints": [
-        "https://github.com/xxnuo/open-webui-lite/releases/latest/download/latest.json"
+        "https://github.com/xxnuo/open-coreui/releases/latest/download/latest.json"
       ]
     }
   }
