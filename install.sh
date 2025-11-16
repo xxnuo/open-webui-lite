@@ -1,14 +1,14 @@
 #!/bin/bash
 
 mkdir -p ~/.config/systemd/user
-cp open-webui-lite.service ~/.config/systemd/user/
+cp open-coreui.service ~/.config/systemd/user/
 
 systemctl --user daemon-reload
 
-systemctl --user enable open-webui-lite.service
+systemctl --user enable open-coreui.service
 
-systemctl --user restart open-webui-lite.service
+systemctl --user restart open-coreui.service
 
-systemctl --user status open-webui-lite.service
+systemctl --user status open-coreui.service
 
-journalctl --user -u open-webui-lite.service -f
+journalctl --user -u open-coreui.service -f

@@ -1,13 +1,13 @@
 # Command Line Interface (CLI) Documentation
 
-This document describes the environment variables available for configuring the Open WebUI Lite backend server.
+This document describes the environment variables available for configuring the Open CoreUI backend server.
 
 ## Server Configuration
 
 | Environment Variable | Default Value | Description |
 |---------------------|---------------|-------------|
 | `HOST` | `0.0.0.0` | Server host address |
-| `PORT` | `8080` | Server port number |
+| `PORT` | `8168` | Server port number |
 | `ENABLE_RANDOM_PORT` | `false` | Enable random port assignment (OS will assign an available port) |
 | `ENV` | `production` | Environment mode |
 | `WEBUI_SECRET_KEY` | Auto-generated UUID | Secret key for WebUI session management |
@@ -16,7 +16,7 @@ This document describes the environment variables available for configuring the 
 
 | Environment Variable | Default Value | Description |
 |---------------------|---------------|-------------|
-| `CONFIG_DIR` | `~/.config/open-webui-lite` | Configuration and data directory path |
+| `CONFIG_DIR` | `~/.config/open-coreui` | Configuration and data directory path |
 
 ## Database Configuration
 
@@ -47,7 +47,7 @@ This document describes the environment variables available for configuring the 
 | `API_KEY_ALLOWED_ENDPOINTS` | `` | Comma-separated list of allowed endpoints for API keys |
 | `DEFAULT_USER_ROLE` | `pending` | Default role for new users |
 | `SHOW_ADMIN_DETAILS` | `true` | Show admin details |
-| `WEBUI_URL` | `http://localhost:8080` | WebUI URL |
+| `WEBUI_URL` | `http://localhost:8168` | WebUI URL |
 | `PENDING_USER_OVERLAY_TITLE` | - | Title for pending user overlay |
 | `PENDING_USER_OVERLAY_CONTENT` | - | Content for pending user overlay |
 | `RESPONSE_WATERMARK` | - | Watermark for responses |
@@ -348,18 +348,18 @@ This document describes the environment variables available for configuring the 
 
 ```bash
 # Basic usage with custom port
-PORT=3000 ./open-webui-lite-linux-x86_64
+PORT=3000 ./open-coreui-linux-x86_64
 
 # With OpenAI API configuration
-OPENAI_API_KEY=sk-xxx OPENAI_API_BASE_URL=https://api.openai.com/v1 ./open-webui-lite-linux-x86_64
+OPENAI_API_KEY=sk-xxx OPENAI_API_BASE_URL=https://api.openai.com/v1 ./open-coreui-linux-x86_64
 
 # With custom configuration directory
-CONFIG_DIR=~/my-config ./open-webui-lite-linux-x86_64
+CONFIG_DIR=~/my-config ./open-coreui-linux-x86_64
 
 # Enable random port
-ENABLE_RANDOM_PORT=true ./open-webui-lite-linux-x86_64
+ENABLE_RANDOM_PORT=true ./open-coreui-linux-x86_64
 
 # Multiple environment variables
-HOST=127.0.0.1 PORT=8888 WEBUI_NAME="My WebUI" ./open-webui-lite-linux-x86_64
+HOST=127.0.0.1 PORT=8888 WEBUI_NAME="My WebUI" ./open-coreui-linux-x86_64
 ```
 

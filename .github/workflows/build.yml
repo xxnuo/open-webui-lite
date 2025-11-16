@@ -158,7 +158,7 @@ jobs:
           cd backend/rust-backend
           cargo fetch --target ${{ matrix.target }}
           cargo build --release --target ${{ matrix.target }}
-          cp target/${{ matrix.target }}/release/open-webui-rust ../../bin/open-webui-lite-${{ matrix.target }}
+          cp target/${{ matrix.target }}/release/open-webui-rust ../../bin/open-coreui-${{ matrix.target }}
 
       - name: Build Backend (Windows)
         if: runner.os == 'Windows'
@@ -168,7 +168,7 @@ jobs:
           mkdir bin
           cd backend/rust-backend
           cargo build --release --target ${{ matrix.target }}
-          copy target/${{ matrix.target }}/release/open-webui-rust.exe ..\..\bin\open-webui-lite-${{ matrix.target }}.exe
+          copy target/${{ matrix.target }}/release/open-webui-rust.exe ..\..\bin\open-coreui-${{ matrix.target }}.exe
 
       - name: Build Desktop (Unix)
         if: runner.os != 'Windows'
@@ -207,7 +207,7 @@ jobs:
           name: build-${{ matrix.target }}
           path: |
             src-tauri/target/${{ matrix.target }}/release/bundle/**/*
-            bin/open-webui-lite-${{ matrix.target }}*
+            bin/open-coreui-${{ matrix.target }}*
           if-no-files-found: error
 
   release:
@@ -241,12 +241,12 @@ jobs:
           find artifacts -name "*.AppImage" -type f -exec cp {} release-assets/ \;
 
           # Copy and rename backend binaries with version
-          find artifacts/build-x86_64-unknown-linux-gnu -name "open-webui-lite-x86_64-unknown-linux-gnu" -type f -exec cp {} release-assets/open-webui-lite-${VERSION}-x86_64-unknown-linux-gnu \;
-          find artifacts/build-aarch64-unknown-linux-gnu -name "open-webui-lite-aarch64-unknown-linux-gnu" -type f -exec cp {} release-assets/open-webui-lite-${VERSION}-aarch64-unknown-linux-gnu \;
-          find artifacts/build-x86_64-apple-darwin -name "open-webui-lite-x86_64-apple-darwin" -type f -exec cp {} release-assets/open-webui-lite-${VERSION}-x86_64-apple-darwin \;
-          find artifacts/build-aarch64-apple-darwin -name "open-webui-lite-aarch64-apple-darwin" -type f -exec cp {} release-assets/open-webui-lite-${VERSION}-aarch64-apple-darwin \;
-          find artifacts/build-x86_64-pc-windows-msvc -name "open-webui-lite-x86_64-pc-windows-msvc.exe" -type f -exec cp {} release-assets/open-webui-lite-${VERSION}-x86_64-pc-windows-msvc.exe \;
-          find artifacts/build-aarch64-pc-windows-msvc -name "open-webui-lite-aarch64-pc-windows-msvc.exe" -type f -exec cp {} release-assets/open-webui-lite-${VERSION}-aarch64-pc-windows-msvc.exe \;
+          find artifacts/build-x86_64-unknown-linux-gnu -name "open-coreui-x86_64-unknown-linux-gnu" -type f -exec cp {} release-assets/open-coreui-${VERSION}-x86_64-unknown-linux-gnu \;
+          find artifacts/build-aarch64-unknown-linux-gnu -name "open-coreui-aarch64-unknown-linux-gnu" -type f -exec cp {} release-assets/open-coreui-${VERSION}-aarch64-unknown-linux-gnu \;
+          find artifacts/build-x86_64-apple-darwin -name "open-coreui-x86_64-apple-darwin" -type f -exec cp {} release-assets/open-coreui-${VERSION}-x86_64-apple-darwin \;
+          find artifacts/build-aarch64-apple-darwin -name "open-coreui-aarch64-apple-darwin" -type f -exec cp {} release-assets/open-coreui-${VERSION}-aarch64-apple-darwin \;
+          find artifacts/build-x86_64-pc-windows-msvc -name "open-coreui-x86_64-pc-windows-msvc.exe" -type f -exec cp {} release-assets/open-coreui-${VERSION}-x86_64-pc-windows-msvc.exe \;
+          find artifacts/build-aarch64-pc-windows-msvc -name "open-coreui-aarch64-pc-windows-msvc.exe" -type f -exec cp {} release-assets/open-coreui-${VERSION}-aarch64-pc-windows-msvc.exe \;
 
           ls -lh release-assets/
 
@@ -298,19 +298,19 @@ jobs:
           > **macOS Users**: If you see "app is damaged" error, run this command in Terminal App:
           > 
           > ```bash
-          > sudo xattr -d com.apple.quarantine "/Applications/Open WebUI Lite Desktop.app"
+          > sudo xattr -d com.apple.quarantine "/Applications/Open CoreUI Desktop.app"
           > ```
 
           ## Backend Server (CLI)
 
           | Platform | Architecture | Binary |
           |----------|-------------|--------|
-          | Linux | x64 | [open-webui-lite-${VERSION}-x86_64-unknown-linux-gnu](https://github.com/${REPO}/releases/download/${TAG}/open-webui-lite-${VERSION}-x86_64-unknown-linux-gnu) |
-          | Linux | ARM64 | [open-webui-lite-${VERSION}-aarch64-unknown-linux-gnu](https://github.com/${REPO}/releases/download/${TAG}/open-webui-lite-${VERSION}-aarch64-unknown-linux-gnu) |
-          | macOS | Intel | [open-webui-lite-${VERSION}-x86_64-apple-darwin](https://github.com/${REPO}/releases/download/${TAG}/open-webui-lite-${VERSION}-x86_64-apple-darwin) |
-          | macOS | Apple Silicon | [open-webui-lite-${VERSION}-aarch64-apple-darwin](https://github.com/${REPO}/releases/download/${TAG}/open-webui-lite-${VERSION}-aarch64-apple-darwin) |
-          | Windows | x64 | [open-webui-lite-${VERSION}-x86_64-pc-windows-msvc.exe](https://github.com/${REPO}/releases/download/${TAG}/open-webui-lite-${VERSION}-x86_64-pc-windows-msvc.exe) |
-          | Windows | ARM64 | [open-webui-lite-${VERSION}-aarch64-pc-windows-msvc.exe](https://github.com/${REPO}/releases/download/${TAG}/open-webui-lite-${VERSION}-aarch64-pc-windows-msvc.exe) |
+          | Linux | x64 | [open-coreui-${VERSION}-x86_64-unknown-linux-gnu](https://github.com/${REPO}/releases/download/${TAG}/open-coreui-${VERSION}-x86_64-unknown-linux-gnu) |
+          | Linux | ARM64 | [open-coreui-${VERSION}-aarch64-unknown-linux-gnu](https://github.com/${REPO}/releases/download/${TAG}/open-coreui-${VERSION}-aarch64-unknown-linux-gnu) |
+          | macOS | Intel | [open-coreui-${VERSION}-x86_64-apple-darwin](https://github.com/${REPO}/releases/download/${TAG}/open-coreui-${VERSION}-x86_64-apple-darwin) |
+          | macOS | Apple Silicon | [open-coreui-${VERSION}-aarch64-apple-darwin](https://github.com/${REPO}/releases/download/${TAG}/open-coreui-${VERSION}-aarch64-apple-darwin) |
+          | Windows | x64 | [open-coreui-${VERSION}-x86_64-pc-windows-msvc.exe](https://github.com/${REPO}/releases/download/${TAG}/open-coreui-${VERSION}-x86_64-pc-windows-msvc.exe) |
+          | Windows | ARM64 | [open-coreui-${VERSION}-aarch64-pc-windows-msvc.exe](https://github.com/${REPO}/releases/download/${TAG}/open-coreui-${VERSION}-aarch64-pc-windows-msvc.exe) |
           EOF
 
           # Replace variables
