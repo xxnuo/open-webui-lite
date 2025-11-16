@@ -69,6 +69,12 @@ Open WebUI 轻量版，一个轻量级的 Open WebUI 实现
 
 **桌面端**：直接安装后打开应用即可使用
 
+> **macOS 用户注意**：如果打开时提示"应用已损坏"等问题，请打开`终端`并执行以下命令：
+> 
+> ```bash
+> sudo xattr -d com.apple.quarantine "/Applications/Open WebUI Lite Desktop.app"
+> ```
+
 **服务端**：
 1. 下载对应系统的二进制文件
 2. 赋予执行权限（Linux/macOS）：`chmod +x open-webui-lite-*`

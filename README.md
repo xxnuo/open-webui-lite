@@ -69,6 +69,12 @@ This project provides two **completely independent** clients. Choose one based o
 
 **Desktop Client**: Simply install and open the application
 
+> **macOS Users**: If you see "app is damaged" error when opening, please open `Terminal` and run this command:
+> 
+> ```bash
+> sudo xattr -d com.apple.quarantine "/Applications/Open WebUI Lite Desktop.app"
+> ```
+
 **Backend Server**:
 1. Download the binary file for your system
 2. Grant execute permission (Linux/macOS): `chmod +x open-webui-lite-*`

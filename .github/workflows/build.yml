@@ -291,6 +291,12 @@ jobs:
           | Linux | x64 | [Open.WebUI.Lite.Desktop_${VERSION}_amd64.deb](https://github.com/${REPO}/releases/download/${TAG}/Open.WebUI.Lite.Desktop_${VERSION}_amd64.deb) / [.rpm](https://github.com/${REPO}/releases/download/${TAG}/Open.WebUI.Lite.Desktop-${VERSION}-1.x86_64.rpm) |
           | Linux | ARM64 | [Open.WebUI.Lite.Desktop_${VERSION}_arm64.deb](https://github.com/${REPO}/releases/download/${TAG}/Open.WebUI.Lite.Desktop_${VERSION}_arm64.deb) / [.rpm](https://github.com/${REPO}/releases/download/${TAG}/Open.WebUI.Lite.Desktop-${VERSION}-1.aarch64.rpm) |
 
+          > **macOS Users**: If you see "app is damaged" error, run this command in Terminal App:
+          > 
+          > ```bash
+          > sudo xattr -d com.apple.quarantine "/Applications/Open WebUI Lite Desktop.app"
+          > ```
+
           ## Backend Server (CLI)
 
           | Platform | Architecture | Binary |
