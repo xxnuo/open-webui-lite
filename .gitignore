@@ -2,3 +2,4 @@
 .env
 /bin
 open-webui-lite.service
+/src-tauri/node_modules

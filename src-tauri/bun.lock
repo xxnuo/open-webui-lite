@@ -1,0 +1,16 @@
+{
+  "lockfileVersion": 1,
+  "configVersion": 1,
+  "workspaces": {
+    "": {
+      "dependencies": {
+        "@tauri-apps/plugin-updater": "~2",
+      },
+    },
+  },
+  "packages": {
+    "@tauri-apps/api": ["@tauri-apps/api@2.9.0", "https://registry.npmmirror.com/@tauri-apps/api/-/api-2.9.0.tgz", {}, "sha512-qD5tMjh7utwBk9/5PrTA/aGr3i5QaJ/Mlt7p8NilQ45WgbifUNPyKWsA63iQ8YfQq6R8ajMapU+/Q8nMcPRLNw=="],
+
+    "@tauri-apps/plugin-updater": ["@tauri-apps/plugin-updater@2.9.0", "https://registry.npmmirror.com/@tauri-apps/plugin-updater/-/plugin-updater-2.9.0.tgz", { "dependencies": { "@tauri-apps/api": "^2.6.0" } }, "sha512-j++sgY8XpeDvzImTrzWA08OqqGqgkNyxczLD7FjNJJx/uXxMZFz5nDcfkyoI/rCjYuj2101Tci/r/HFmOmoxCg=="],
+  }
+}

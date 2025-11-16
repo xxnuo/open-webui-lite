@@ -45,7 +45,7 @@ Visit the [Releases](https://github.com/xxnuo/open-webui-lite/releases/latest) p
 
 ### Client Types
 
-This project provides two **completely independent** clients. Choose based on your use case:
+This project provides two **completely independent** clients. Choose one based on your use case:
 
 #### 1. Desktop Application
 

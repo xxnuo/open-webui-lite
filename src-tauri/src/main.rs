@@ -164,6 +164,7 @@ fn start_sidecar(app_handle: tauri::AppHandle) -> Result<String, String> {
 
 fn main() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_websocket::init())
         .plugin(tauri_plugin_shell::init())
         .setup(|app| {
