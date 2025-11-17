@@ -1,4 +1,4 @@
-.PHONY: prepare-git prepare-frontend prepare-frontend-svelte prepare-backend prepare-desktop build-frontend build-frontend-svelte build-backend build-backend-slim run-backend-slim run-backend run-desktop build-desktop
+.PHONY: build-backend build-backend-slim build-desktop build-frontend build-frontend-svelte prepare-backend prepare-desktop prepare-frontend prepare-frontend-svelte prepare-git run-backend run-backend-slim run-desktop
 
 BUILD_HOST := $(shell rustc -Vv | grep host | cut -d' ' -f2)
 
@@ -60,4 +60,11 @@ update-version:
 	echo sed -i.bak "s/\"version\": \".*\"/\"version\": \"0.6.32-$$NEW_VERSION\"/" backend/package.json && echo rm backend/package.json.bak; \
 	echo sed -i.bak "s/\"version\": \".*\"/\"version\": \"0.6.32-$$NEW_VERSION\"/" backend/svelte-frontend/package.json && echo rm backend/svelte-frontend/package.json.bak; \
 	sed -i.bak "s/^version = \".*\"/version = \"$$NEW_VERSION\"/" backend/rust-backend/Cargo.toml && rm backend/rust-backend/Cargo.toml.bak; \
+	sed -i.bak "s/^pkgver=.*/pkgver=$$NEW_VERSION/" PKGBUILD && rm PKGBUILD.bak; \
 	echo "Version updated successfully to $$NEW_VERSION"
+
+build-arch-pkg: build-backend
+	makepkg -f
+
+update-aur:
+	makepkg --printsrcinfo > .SRCINFO

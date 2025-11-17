@@ -3,3 +3,9 @@
 /bin
 open-coreui.service
 /src-tauri/node_modules
+
+# AUR build artifacts
+*.deb
+*.pkg.tar.zst
+/pkg
+/src

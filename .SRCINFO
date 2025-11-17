@@ -1,0 +1,26 @@
+pkgbase = open-coreui-desktop
+	pkgdesc = Open CoreUI Desktop Application - A lightweight implementation of Open WebUI
+	pkgver = 0.9.6
+	pkgrel = 1
+	url = https://github.com/xxnuo/open-coreui
+	install = open-coreui-desktop.install
+	arch = x86_64
+	arch = aarch64
+	license = LICENSE
+	depends = cairo
+	depends = desktop-file-utils
+	depends = gdk-pixbuf2
+	depends = glib2
+	depends = gtk3
+	depends = hicolor-icon-theme
+	depends = libsoup
+	depends = pango
+	depends = webkit2gtk-4.1
+	options = !strip
+	options = !emptydirs
+	source_x86_64 = https://github.com/xxnuo/open-coreui/releases/download/v0.9.6/Open.CoreUI.Desktop_0.9.6_amd64.deb
+	sha256sums_x86_64 = SKIP
+	source_aarch64 = https://github.com/xxnuo/open-coreui/releases/download/v0.9.6/Open.CoreUI.Desktop_0.9.6_arm64.deb
+	sha256sums_aarch64 = SKIP
+
+pkgname = open-coreui-desktop

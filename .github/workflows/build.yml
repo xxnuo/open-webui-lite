@@ -201,6 +201,19 @@ jobs:
           cd ..
           cargo tauri build --target ${{ matrix.target }}
 
+      - name: Build Arch Linux Package
+        if: runner.os == 'Linux'
+        run: |
+          # Install makepkg dependencies
+          sudo apt-get install -y binutils fakeroot
+          
+          # Build Arch package
+          make build-arch-pkg
+          
+          # Move to artifacts location
+          mkdir -p arch-pkg
+          mv *.pkg.tar.zst arch-pkg/ || true
+
       - name: Upload Artifacts
         uses: actions/upload-artifact@v5
         with:
@@ -208,6 +221,7 @@ jobs:
           path: |
             src-tauri/target/${{ matrix.target }}/release/bundle/**/*
             bin/open-coreui-${{ matrix.target }}*
+            arch-pkg/*.pkg.tar.zst
           if-no-files-found: error
 
   release:
@@ -239,6 +253,7 @@ jobs:
           find artifacts -name "*-setup.exe" -type f -exec cp {} release-assets/ \;
           find artifacts -name "*.app.tar.gz" -type f -exec cp {} release-assets/ \;
           find artifacts -name "*.AppImage" -type f -exec cp {} release-assets/ \;
+          find artifacts -name "*.pkg.tar.zst" -type f -exec cp {} release-assets/ \;
 
           # Copy and rename backend binaries with version
           find artifacts/build-x86_64-unknown-linux-gnu -name "open-coreui-x86_64-unknown-linux-gnu" -type f -exec cp {} release-assets/open-coreui-${VERSION}-x86_64-unknown-linux-gnu \;
@@ -288,12 +303,12 @@ jobs:
 
           | Platform | Architecture | Download |
           |----------|-------------|----------|
-          | Windows | x64 | [Open.WebUI.Lite.Desktop_${VERSION}_x64-setup.exe](https://github.com/${REPO}/releases/download/${TAG}/Open.WebUI.Lite.Desktop_${VERSION}_x64-setup.exe) / [.msi](https://github.com/${REPO}/releases/download/${TAG}/Open.WebUI.Lite.Desktop_${VERSION}_x64_en-US.msi) |
-          | Windows | ARM64 | [Open.WebUI.Lite.Desktop_${VERSION}_arm64-setup.exe](https://github.com/${REPO}/releases/download/${TAG}/Open.WebUI.Lite.Desktop_${VERSION}_arm64-setup.exe) / [.msi](https://github.com/${REPO}/releases/download/${TAG}/Open.WebUI.Lite.Desktop_${VERSION}_arm64_en-US.msi) |
-          | macOS | Intel | [Open.WebUI.Lite.Desktop_${VERSION}_x64.dmg](https://github.com/${REPO}/releases/download/${TAG}/Open.WebUI.Lite.Desktop_${VERSION}_x64.dmg) |
-          | macOS | Apple Silicon | [Open.WebUI.Lite.Desktop_${VERSION}_aarch64.dmg](https://github.com/${REPO}/releases/download/${TAG}/Open.WebUI.Lite.Desktop_${VERSION}_aarch64.dmg) |
-          | Linux | x64 | [Open.WebUI.Lite.Desktop_${VERSION}_amd64.deb](https://github.com/${REPO}/releases/download/${TAG}/Open.WebUI.Lite.Desktop_${VERSION}_amd64.deb) / [.rpm](https://github.com/${REPO}/releases/download/${TAG}/Open.WebUI.Lite.Desktop-${VERSION}-1.x86_64.rpm) |
-          | Linux | ARM64 | [Open.WebUI.Lite.Desktop_${VERSION}_arm64.deb](https://github.com/${REPO}/releases/download/${TAG}/Open.WebUI.Lite.Desktop_${VERSION}_arm64.deb) / [.rpm](https://github.com/${REPO}/releases/download/${TAG}/Open.WebUI.Lite.Desktop-${VERSION}-1.aarch64.rpm) |
+          | Windows | x64 | [Open.CoreUI.Desktop_${VERSION}_x64-setup.exe](https://github.com/${REPO}/releases/download/${TAG}/Open.CoreUI.Desktop_${VERSION}_x64-setup.exe) / [.msi](https://github.com/${REPO}/releases/download/${TAG}/Open.CoreUI.Desktop_${VERSION}_x64_en-US.msi) |
+          | Windows | ARM64 | [Open.CoreUI.Desktop_${VERSION}_arm64-setup.exe](https://github.com/${REPO}/releases/download/${TAG}/Open.CoreUI.Desktop_${VERSION}_arm64-setup.exe) / [.msi](https://github.com/${REPO}/releases/download/${TAG}/Open.CoreUI.Desktop_${VERSION}_arm64_en-US.msi) |
+          | macOS | Intel | [Open.CoreUI.Desktop_${VERSION}_x64.dmg](https://github.com/${REPO}/releases/download/${TAG}/Open.CoreUI.Desktop_${VERSION}_x64.dmg) |
+          | macOS | Apple Silicon | [Open.CoreUI.Desktop_${VERSION}_aarch64.dmg](https://github.com/${REPO}/releases/download/${TAG}/Open.CoreUI.Desktop_${VERSION}_aarch64.dmg) |
+          | Linux | x64 | [Open.CoreUI.Desktop_${VERSION}_amd64.deb](https://github.com/${REPO}/releases/download/${TAG}/Open.CoreUI.Desktop_${VERSION}_amd64.deb) / [.rpm](https://github.com/${REPO}/releases/download/${TAG}/Open.CoreUI.Desktop-${VERSION}-1.x86_64.rpm) / [.pkg.tar.zst](https://github.com/${REPO}/releases/download/${TAG}/open-coreui-desktop-${VERSION}-1-x86_64.pkg.tar.zst) |
+          | Linux | ARM64 | [Open.CoreUI.Desktop_${VERSION}_arm64.deb](https://github.com/${REPO}/releases/download/${TAG}/Open.CoreUI.Desktop_${VERSION}_arm64.deb) / [.rpm](https://github.com/${REPO}/releases/download/${TAG}/Open.CoreUI.Desktop-${VERSION}-1.aarch64.rpm) / [.pkg.tar.zst](https://github.com/${REPO}/releases/download/${TAG}/open-coreui-desktop-${VERSION}-1-aarch64.pkg.tar.zst) |
 
           > **macOS Users**: If you see "app is damaged" error, run this command in Terminal App:
           > 
