@@ -115,8 +115,8 @@ jobs:
       - uses: swatinem/rust-cache@v2
         with:
           workspaces: |
-            './backend -> target'
-            './src-tauri -> target'
+            backend -> target
+            src-tauri -> target
           key: ${{ matrix.target }}
           cache-all-crates: true
           shared-key: "rust-build"
