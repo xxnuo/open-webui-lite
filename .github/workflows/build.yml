@@ -23,8 +23,8 @@ env:
   RUSTC_WRAPPER: "sccache"
 
 jobs:
-  # Build svelte frontend once and cache it
-  build-svelte-frontend:
+  # Build frontend once and cache it
+  build-frontend:
     runs-on: ubuntu-latest
     outputs:
       cache-hit: ${{ steps.cache-frontend.outputs.cache-hit }}
@@ -55,7 +55,7 @@ jobs:
 
       - name: Build Frontend
         if: steps.cache-frontend.outputs.cache-hit != 'true'
-        run: make build-frontend-svelte
+        run: make build-frontend
 
       - uses: actions/upload-artifact@v5
         with:
@@ -65,7 +65,7 @@ jobs:
 
   # Build backend and desktop in one job
   build:
-    needs: build-svelte-frontend
+    needs: build-frontend
     strategy:
       fail-fast: false
       matrix:
