@@ -111,7 +111,7 @@ jobs:
           path: |
             src-tauri/node_modules
             ~/.bun/install/cache
-          key: bun-tauri-${{ runner.os }}-${{ hashFiles('src-tauri/bun.lock') }}
+          key: bun-tauri-${{ runner.os }}-${{ hashFiles('src-tauri/bun.lock', 'src-tauri/package.json') }}
           restore-keys: |
             bun-tauri-${{ runner.os }}-
 
