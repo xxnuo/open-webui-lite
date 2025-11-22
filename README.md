@@ -23,10 +23,10 @@
 
 Open CoreUI, a lightweight implementation of Open WebUI
 
+> **This is a rewritten lite fork of Open WebUI v0.6.32, not an official version.**
+
 > **⚠️ Early Development Stage**  
 > This project is currently in early development. Only basic chat functionality is implemented at this time. Other features are being developed gradually.
->
-> **This is a rewritten lite fork of Open WebUI v0.6.32, not an official version.**
 
 <img src="./assets/preview.png" alt="Open CoreUI Preview">
 
@@ -85,23 +85,7 @@ This project provides two **completely independent** clients. Choose one based o
 
 For detailed configuration options and environment variables, see [CLI Documentation](CLI.md).
 
-## Dependencies
+## Thanks
 
-### Original Project
-
-> [open-webui](https://github.com/open-webui/open-webui)
-
-### Rust Backend
-
-> [open-webui-rust](https://github.com/xxnuo/open-webui-rust)
-
-Based on [knox](https://github.com/knoxchat)'s Rust backend
-
-#### Changes:
-
-- Add desktop client support
-- Add SQLite database support
-- Remove Postgres database dependencies
-- Remove Redis dependencies
-
-> You can support [knox's](https://github.com/knoxchat/open-webui-rust) development if you find it useful.
+- [open-webui](https://github.com/open-webui/open-webui) - The original awesome project
+- [knox](https://github.com/knoxchat) - The original author of the Rust backend stopped open-sourcing the backend for certain reasons, but he completed most of the foundational backend conversion work, for which I am deeply grateful for knox's contributions.

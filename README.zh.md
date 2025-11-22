@@ -23,10 +23,10 @@
 
 Open WebUI 轻量版，一个轻量级的 Open WebUI 实现
 
+> **这是一个 Open WebUI v0.6.32 的轻量版重写，不是官方版本。**
+
 > **⚠️ 早期开发阶段**  
 > 本项目目前处于早期开发阶段，目前仅实现了基本的对话功能，其他功能正在逐步开发中。
->
-> **这是一个 Open WebUI v0.6.32 的轻量版重写，不是官方版本。**
 
 <img src="./assets/preview.png" alt="Open CoreUI Preview">
 
@@ -85,23 +85,7 @@ Open WebUI 轻量版，一个轻量级的 Open WebUI 实现
 
 详细的配置选项和环境变量说明请参考 [CLI 文档](CLI.md)。
 
-## 依赖库
+## 致谢
 
-### 原版项目
-
-> [open-webui/open-webui](https://github.com/open-webui/open-webui)
-
-### Rust 后端
-
-> [xxnuo/open-webui-rust](https://github.com/xxnuo/open-webui-rust)
-
-基于 [knox](https://github.com/knoxchat) 大佬的 Rust 后端实现
-
-#### 改动:
-
-- 添加了桌面客户端的支持
-- 添加了 SQLite 数据库的支持
-- 移除了对 Postgres 数据库的依赖
-- 移除了对 Redis 的依赖
-
-> 有能力的朋友可以去[赞助支持大佬](https://github.com/knoxchat/open-webui-rust)开发的后端。
+- [open-webui](https://github.com/open-webui/open-webui) - 原始的优秀项目
+- [knox](https://github.com/knoxchat) - 初始版本的 Rust 后端作者，因某些原因停止了后端的开源，但他完成了大部分的后端转换工作，对此我非常感激 knox 的贡献。
