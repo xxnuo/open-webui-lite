@@ -1,0 +1,55 @@
+{
+  "name": "Weather Tools",
+  "description": "Tools for getting weather information",
+  "version": "1.0.0",
+  "tools": [
+    {
+      "name": "get_weather",
+      "description": "Get current weather for a city",
+      "type": "http_api",
+      "parameters": {
+        "city": {
+          "type": "string",
+          "description": "City name (e.g., 'London', 'New York')",
+          "required": true
+        }
+      },
+      "handler": {
+        "type": "http",
+        "method": "GET",
+        "url": "https://wttr.in/{{params.city}}",
+        "params": {
+          "format": "j1"
+        },
+        "response": {
+          "transform": "Weather in {{params.city}}: {{body.current_condition[0].temp_C}}°C, {{body.current_condition[0].weatherDesc[0].value}}"
+        }
+      }
+    },
+    {
+      "name": "get_user_info",
+      "description": "Get current user information",
+      "type": "context",
+      "parameters": {},
+      "handler": {
+        "type": "context",
+        "template": "User: {{user.name}} ({{user.email}}) - Role: {{user.role}}"
+      }
+    },
+    {
+      "name": "get_current_time",
+      "description": "Get the current timestamp",
+      "type": "function",
+      "parameters": {},
+      "handler": {
+        "type": "built_in",
+        "function": "datetime.now"
+      }
+    }
+  ],
+  "environment": {
+    "required": [],
+    "optional": []
+  }
+}
+

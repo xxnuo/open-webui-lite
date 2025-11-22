@@ -1,0 +1,253 @@
+{
+  "name": "Advanced Tool Features Demo",
+  "description": "Demonstrates Phase 3 features: expression evaluation, tool chaining, conditional execution, error handling, rate limiting, and caching",
+  "version": "2.0.0",
+  
+  "tools": [
+    {
+      "name": "calculator",
+      "description": "Safe mathematical expression evaluator",
+      "type": "expression",
+      "parameters": {
+        "equation": {
+          "type": "string",
+          "description": "Mathematical expression to evaluate (e.g., '2 + 2 * 3')",
+          "required": true
+        }
+      },
+      "handler": {
+        "type": "expression",
+        "engine": "evalexpr",
+        "expression": "{{equation}}"
+      },
+      "error_handling": {
+        "default": {
+          "value": 0
+        }
+      }
+    },
+    
+    {
+      "name": "get_weather",
+      "description": "Get weather data for a city with caching and rate limiting",
+      "type": "http_api",
+      "parameters": {
+        "city": {
+          "type": "string",
+          "description": "City name (e.g., 'London')",
+          "required": true
+        }
+      },
+      "handler": {
+        "type": "http",
+        "method": "GET",
+        "url": "https://api.openweathermap.org/data/2.5/weather",
+        "params": {
+          "q": "{{city}}",
+          "appid": "{{env.OPENWEATHER_API_KEY}}",
+          "units": "metric"
+        },
+        "response": {
+          "transform": "Temperature in {{params.city}}: {{body.main.temp}}°C, Condition: {{body.weather[0].description}}"
+        }
+      },
+      "cache_enabled": true,
+      "error_handling": {
+        "retry": {
+          "max_attempts": 3,
+          "initial_delay_ms": 1000,
+          "max_delay_ms": 5000
+        }
+      }
+    },
+    
+    {
+      "name": "backup_weather_service",
+      "description": "Fallback weather service",
+      "type": "http_api",
+      "parameters": {
+        "city": {
+          "type": "string",
+          "description": "City name",
+          "required": true
+        }
+      },
+      "handler": {
+        "type": "http",
+        "method": "GET",
+        "url": "https://wttr.in/{{city}}",
+        "params": {
+          "format": "j1"
+        },
+        "response": {
+          "extract": "current_condition[0].temp_C"
+        }
+      }
+    },
+    
+    {
+      "name": "reliable_weather",
+      "description": "Weather API with automatic fallback",
+      "type": "http_api",
+      "parameters": {
+        "city": {
+          "type": "string",
+          "description": "City name",
+          "required": true
+        }
+      },
+      "handler": {
+        "type": "http",
+        "method": "GET",
+        "url": "https://api.openweathermap.org/data/2.5/weather",
+        "params": {
+          "q": "{{city}}",
+          "appid": "{{env.OPENWEATHER_API_KEY}}",
+          "units": "metric"
+        },
+        "response": {
+          "transform": "{{body.main.temp}}°C"
+        }
+      },
+      "error_handling": {
+        "fallback": {
+          "fallback_tool": "backup_weather_service"
+        }
+      }
+    },
+    
+    {
+      "name": "analyze_temperature",
+      "description": "Analyze if temperature is hot or cold",
+      "type": "expression",
+      "parameters": {
+        "temperature": {
+          "type": "number",
+          "description": "Temperature in Celsius",
+          "required": true
+        }
+      },
+      "handler": {
+        "type": "expression",
+        "engine": "evalexpr",
+        "expression": "temperature > 25"
+      }
+    },
+    
+    {
+      "name": "format_weather_report",
+      "description": "Format a weather report",
+      "type": "context",
+      "parameters": {
+        "city": {
+          "type": "string",
+          "required": true
+        },
+        "temperature": {
+          "type": "number",
+          "required": true
+        },
+        "is_hot": {
+          "type": "boolean",
+          "required": true
+        }
+      },
+      "handler": {
+        "type": "context",
+        "template": "Weather Report for {{params.city}}: {{params.temperature}}°C - It's {{params.is_hot}} that it's hot! Requested by {{user.name}}"
+      }
+    },
+    
+    {
+      "name": "get_current_time",
+      "description": "Get current timestamp",
+      "type": "function",
+      "parameters": {},
+      "handler": {
+        "type": "built_in",
+        "function": "datetime.now"
+      }
+    }
+  ],
+  
+  "tool_chains": [
+    {
+      "name": "complete_weather_analysis",
+      "description": "Get weather, analyze it, and format a complete report",
+      "steps": [
+        {
+          "tool_name": "get_weather",
+          "parameter_mapping": {},
+          "error_handling": {
+            "fallback": {
+              "fallback_tool": "backup_weather_service"
+            }
+          }
+        },
+        {
+          "tool_name": "analyze_temperature",
+          "parameter_mapping": {
+            "temperature": "main.temp"
+          }
+        },
+        {
+          "tool_name": "format_weather_report",
+          "parameter_mapping": {
+            "city": "name",
+            "temperature": "main.temp",
+            "is_hot": "result"
+          }
+        }
+      ]
+    },
+    
+    {
+      "name": "conditional_weather_alert",
+      "description": "Send alert only if temperature is extreme",
+      "steps": [
+        {
+          "tool_name": "get_weather",
+          "parameter_mapping": {}
+        },
+        {
+          "tool_name": "analyze_temperature",
+          "parameter_mapping": {
+            "temperature": "main.temp"
+          },
+          "condition": "temperature > 30 || temperature < 0"
+        },
+        {
+          "tool_name": "format_weather_report",
+          "parameter_mapping": {
+            "city": "name",
+            "temperature": "main.temp",
+            "is_hot": "result"
+          },
+          "condition": "is_hot == true"
+        }
+      ]
+    }
+  ],
+  
+  "rate_limits": {
+    "get_weather": {
+      "requests": 60,
+      "window_seconds": 60
+    },
+    "reliable_weather": {
+      "requests": 100,
+      "window_seconds": 60
+    }
+  },
+  
+  "cache_config": {
+    "ttl_seconds": 300,
+    "max_size_mb": 50
+  },
+  
+  "environment": {
+    "required": ["OPENWEATHER_API_KEY"],
+    "optional": []
+  }
+}
+
