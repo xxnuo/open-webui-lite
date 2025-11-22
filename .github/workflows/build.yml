@@ -59,7 +59,7 @@ jobs:
 
       - uses: actions/upload-artifact@v5
         with:
-          name: svelte-frontend-build
+          name: frontend-build
           path: frontend/build/
           retention-days: 1
 
@@ -126,7 +126,7 @@ jobs:
       - name: Download Frontend Build
         uses: actions/download-artifact@v6
         with:
-          name: svelte-frontend-build
+          name: frontend-build
           path: frontend/build/
 
       - name: Install Linux Dependencies

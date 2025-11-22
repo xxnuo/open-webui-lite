@@ -16,7 +16,7 @@ use rust_embed::RustEmbed;
 
 #[cfg(feature = "embed-frontend")]
 #[derive(RustEmbed)]
-#[folder = "../svelte-frontend/build/"]
+#[folder = "../frontend/build/"]
 pub struct FrontendAssets;
 
 // Dummy struct for slim build (no embedded frontend)
