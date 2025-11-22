@@ -213,7 +213,7 @@ jobs:
           ARCH="${{ matrix.target == 'aarch64-unknown-linux-gnu' && 'aarch64' || 'x86_64' }}"
           
           docker run --rm -v $PWD:/workspace -w /workspace archlinux:latest bash -c "
-            pacman -Sy --noconfirm base-devel fakeroot &&
+            pacman -Sy --noconfirm base-devel fakeroot cairo desktop-file-utils gdk-pixbuf2 glib2 gtk3 hicolor-icon-theme libsoup pango webkit2gtk-4.1 &&
             useradd -m builder &&
             chown -R builder:builder /workspace &&
             su builder -c 'CARCH=${ARCH} makepkg -f'
