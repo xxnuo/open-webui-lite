@@ -105,16 +105,6 @@ jobs:
         with:
           bun-version: latest
 
-      - name: Cache Bun Dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            src-tauri/node_modules
-            ~/.bun/install/cache
-          key: bun-tauri-${{ runner.os }}-${{ hashFiles('src-tauri/package.json') }}
-          restore-keys: |
-            bun-tauri-${{ runner.os }}-
-
       - uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.target }}
