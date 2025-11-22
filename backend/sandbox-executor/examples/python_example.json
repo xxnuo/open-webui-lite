@@ -1,0 +1,6 @@
+{
+  "code": "import sys\nimport json\n\nprint('Python version:', sys.version)\nprint('Hello from secure sandbox!')\n\ndata = {'result': 42, 'message': 'Success'}\nprint(json.dumps(data, indent=2))",
+  "language": "python",
+  "timeout": 30
+}
+

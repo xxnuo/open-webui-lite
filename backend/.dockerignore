@@ -1,0 +1,91 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# CI/CD
+.github
+.gitlab-ci.yml
+
+# Development
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Environment files
+.env
+.env.*
+!.env.example
+env.example
+
+# Dependencies
+node_modules
+target
+venv
+__pycache__
+*.pyc
+.pytest_cache
+
+# Build artifacts
+dist
+build
+*.egg-info
+.svelte-kit
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Documentation
+*.md
+!README.md
+docs/
+
+# Testing
+.coverage
+coverage/
+htmlcov/
+.pytest_cache/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Backups
+backups/
+*.sql
+*.tar.gz
+*.zip
+
+# Docker
+docker-compose.yaml
+docker-compose.*.yaml
+Dockerfile.dev
+.dockerignore
+
+# Rust specific
+rust-backend/target/
+**/*.rs.bk
+
+# Python specific
+**/__pycache__/
+**/*.py[cod]
+**/venv/
+**/.venv/
+
+# Frontend specific
+.svelte-kit/
+build/
+.vercel/
+.output/
+dist/

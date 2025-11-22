@@ -1,0 +1,327 @@
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: open-webui-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-open_webui}
+      POSTGRES_USER: ${POSTGRES_USER:-open_webui}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-open_webui_password}
+      POSTGRES_INITDB_ARGS: "-E UTF8"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-open_webui}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - open-webui-network
+
+  # Redis (optional, for caching and WebSocket management)
+  redis:
+    image: redis:7-alpine
+    container_name: open-webui-redis
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - open-webui-network
+
+  # ChromaDB (vector database for RAG)
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: open-webui-chromadb
+    environment:
+      IS_PERSISTENT: "TRUE"
+      ANONYMIZED_TELEMETRY: "${CHROMA_TELEMETRY:-FALSE}"
+    volumes:
+      - chromadb_data:/chroma/chroma
+    ports:
+      - "${CHROMA_PORT:-8000}:8000"
+    healthcheck:
+      test: ["CMD-SHELL", "timeout 5 bash -c '</dev/tcp/localhost/8000' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - open-webui-network
+
+  # Rust Backend
+  rust-backend:
+    image: public.ecr.aws/o3p7x2f5/knoxchat/open-webui-rust-backend:latest
+    # image: open-webui-rust-backend:latest
+    container_name: open-webui-rust-backend
+    environment:
+      # Server
+      HOST: ${HOST:-0.0.0.0}
+      PORT: ${RUST_PORT:-8168}
+      ENV: ${ENV:-prod}
+      WEBUI_SECRET_KEY: ${WEBUI_SECRET_KEY:-}
+      
+      # Database
+      DATABASE_URL: postgresql://${POSTGRES_USER:-open_webui}:${POSTGRES_PASSWORD:-open_webui_password}@postgres:5432/${POSTGRES_DB:-open_webui}
+      DATABASE_POOL_SIZE: ${DATABASE_POOL_SIZE:-20}
+      DATABASE_POOL_MAX_OVERFLOW: ${DATABASE_POOL_MAX_OVERFLOW:-10}
+      DATABASE_POOL_TIMEOUT: ${DATABASE_POOL_TIMEOUT:-30}
+      DATABASE_POOL_RECYCLE: ${DATABASE_POOL_RECYCLE:-1800}
+      
+      # Redis
+      ENABLE_REDIS: ${ENABLE_REDIS:-true}
+      REDIS_URL: redis://redis:6379
+      
+      # ChromaDB
+      CHROMA_URL: ${CHROMA_URL:-http://chromadb:8000}
+      ENABLE_CHROMA: ${ENABLE_CHROMA:-true}
+      
+      # RAG & Embeddings
+      RAG_EMBEDDING_ENGINE: ${RAG_EMBEDDING_ENGINE:-openai}
+      RAG_EMBEDDING_MODEL: ${RAG_EMBEDDING_MODEL:-text-embedding-3-small}
+      RAG_OPENAI_API_KEY: ${RAG_OPENAI_API_KEY:-${OPENAI_API_KEY}}
+      RAG_OPENAI_API_BASE_URL: ${RAG_OPENAI_API_BASE_URL:-${OPENAI_API_BASE_URL}}
+      RAG_RERANKING_MODEL: ${RAG_RERANKING_MODEL:-}
+      CHUNK_SIZE: ${CHUNK_SIZE:-1500}
+      CHUNK_OVERLAP: ${CHUNK_OVERLAP:-100}
+      
+      # Authentication
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-30d}
+      ENABLE_SIGNUP: ${ENABLE_SIGNUP:-true}
+      ENABLE_LOGIN_FORM: ${ENABLE_LOGIN_FORM:-true}
+      ENABLE_API_KEY: ${ENABLE_API_KEY:-true}
+      DEFAULT_USER_ROLE: ${DEFAULT_USER_ROLE:-user}
+      SHOW_ADMIN_DETAILS: ${SHOW_ADMIN_DETAILS:-true}
+      WEBUI_URL: ${WEBUI_URL:-http://localhost:3000}
+      
+      # CORS
+      CORS_ALLOW_ORIGIN: ${CORS_ALLOW_ORIGIN:-*}
+      
+      # WebSocket/Socket.IO (Native Rust Implementation)
+      ENABLE_SOCKETIO: ${ENABLE_SOCKETIO:-true}
+      ENABLE_WEBSOCKET_SUPPORT: ${ENABLE_WEBSOCKET_SUPPORT:-true}
+      WEBSOCKET_MANAGER: ${WEBSOCKET_MANAGER:-redis}
+      WEBSOCKET_REDIS_URL: ${WEBSOCKET_REDIS_URL:-redis://redis:6379}
+      
+      # Features
+      ENABLE_OPENAI_API: ${ENABLE_OPENAI_API:-true}
+      ENABLE_CHANNELS: ${ENABLE_CHANNELS:-true}
+      ENABLE_IMAGE_GENERATION: ${ENABLE_IMAGE_GENERATION:-false}
+      ENABLE_CODE_EXECUTION: ${ENABLE_CODE_EXECUTION:-true}
+      CODE_EXECUTION_SANDBOX_URL: ${CODE_EXECUTION_SANDBOX_URL:-http://sandbox-executor:8090}
+      ENABLE_CODE_INTERPRETER: ${ENABLE_CODE_INTERPRETER:-true}
+      CODE_INTERPRETER_SANDBOX_URL: ${CODE_INTERPRETER_SANDBOX_URL:-http://sandbox-executor:8090}
+      ENABLE_WEB_SEARCH: ${ENABLE_WEB_SEARCH:-false}
+      ENABLE_ADMIN_CHAT_ACCESS: ${ENABLE_ADMIN_CHAT_ACCESS:-true}
+      ENABLE_ADMIN_EXPORT: ${ENABLE_ADMIN_EXPORT:-true}
+      ENABLE_NOTES: ${ENABLE_NOTES:-true}
+      ENABLE_COMMUNITY_SHARING: ${ENABLE_COMMUNITY_SHARING:-true}
+      ENABLE_MESSAGE_RATING: ${ENABLE_MESSAGE_RATING:-true}
+      
+      # Storage
+      UPLOAD_DIR: ${UPLOAD_DIR:-/app/data/uploads}
+      CACHE_DIR: ${CACHE_DIR:-/app/data/cache}
+      STATIC_DIR: ${STATIC_DIR:-/app/static}
+      
+      # Logging
+      GLOBAL_LOG_LEVEL: ${GLOBAL_LOG_LEVEL:-info}
+      RUST_LOG: ${RUST_LOG:-info}
+      
+      # OpenAI
+      OPENAI_API_BASE_URL: ${OPENAI_API_BASE_URL:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      
+    volumes:
+      - rust_backend_data:/app/data
+    ports:
+      - "${RUST_PORT:-8168}:8168"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      chromadb:
+        condition: service_healthy
+      sandbox-executor:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8168/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - open-webui-network
+
+  # Sandbox Runtime
+  sandbox-runtime:
+    # build:
+    #   context: ./sandbox-executor
+    #   dockerfile: Dockerfile.runtime
+    # image: sandbox-runtime:latest
+    image: public.ecr.aws/o3p7x2f5/knoxchat/sandbox-runtime:latest
+    container_name: sandbox-runtime
+    command: /bin/true  # Just pulls the image
+    networks:
+      - open-webui-network
+
+  # Sandbox Executor Service
+  sandbox-executor:
+    # build:
+    #   context: ./sandbox-executor
+    #   dockerfile: Dockerfile
+    image: public.ecr.aws/o3p7x2f5/knoxchat/sandbox-executor:latest
+    container_name: sandbox-executor
+    user: root  # Needs root to access Docker socket
+    ports:
+      - "${SANDBOX_PORT:-8090}:8090"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./sandbox-executor/logs:/var/log/sandbox-executor
+    environment:
+      - SANDBOX_HOST=0.0.0.0
+      - SANDBOX_PORT=8090
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - MAX_EXECUTION_TIME=${SANDBOX_MAX_EXECUTION_TIME:-60}
+      - MAX_MEMORY_MB=${SANDBOX_MAX_MEMORY_MB:-512}
+      - MAX_CPU_QUOTA=${SANDBOX_MAX_CPU_QUOTA:-100000}
+      - MAX_DISK_MB=${SANDBOX_MAX_DISK_MB:-100}
+      - MAX_CONCURRENT_EXECUTIONS=${SANDBOX_MAX_CONCURRENT_EXECUTIONS:-10}
+      - RATE_LIMIT_PER_MINUTE=${SANDBOX_RATE_LIMIT_PER_MINUTE:-30}
+      - RATE_LIMIT_BURST=${SANDBOX_RATE_LIMIT_BURST:-10}
+      - CONTAINER_IMAGE=public.ecr.aws/o3p7x2f5/knoxchat/sandbox-runtime:latest
+      - NETWORK_MODE=${SANDBOX_NETWORK_MODE:-none}
+      - READ_ONLY_ROOT=${SANDBOX_READ_ONLY_ROOT:-false}
+      - DROP_ALL_CAPABILITIES=${SANDBOX_DROP_ALL_CAPABILITIES:-true}
+      - ENABLE_STREAMING=${SANDBOX_ENABLE_STREAMING:-true}
+      - KEEP_CONTAINERS=${SANDBOX_KEEP_CONTAINERS:-false}
+      - ENABLE_PYTHON=${SANDBOX_ENABLE_PYTHON:-true}
+      - ENABLE_JAVASCRIPT=${SANDBOX_ENABLE_JAVASCRIPT:-true}
+      - ENABLE_SHELL=${SANDBOX_ENABLE_SHELL:-true}
+      - ENABLE_RUST=${SANDBOX_ENABLE_RUST:-true}
+      - ENABLE_AUDIT_LOG=${SANDBOX_ENABLE_AUDIT_LOG:-true}
+      - AUDIT_LOG_PATH=/var/log/sandbox-executor/audit.log
+    depends_on:
+      - sandbox-runtime
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8090/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - open-webui-network
+
+  # Frontend (SvelteKit)
+  frontend:
+    image: public.ecr.aws/o3p7x2f5/knoxchat/open-webui-frontend:latest
+    # image: open-webui-frontend:latest
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    #   args:
+    #     BUILD_HASH: ${BUILD_HASH:-dev-build}
+    #     USE_CUDA: ${USE_CUDA:-false}
+    #     USE_SLIM: ${USE_SLIM:-false}
+    #     USE_PERMISSION_HARDENING: ${USE_PERMISSION_HARDENING:-false}
+    #     USE_CUDA_VER: ${USE_CUDA_VER:-cu128}
+    #     USE_EMBEDDING_MODEL: ${USE_EMBEDDING_MODEL:-sentence-transformers/all-MiniLM-L6-v2}
+    #     USE_RERANKING_MODEL: ${USE_RERANKING_MODEL:-}
+    #     UID: ${UID:-0}
+    #     GID: ${GID:-0}
+    container_name: open-webui-frontend
+    environment:
+      # Backend URLs (Socket.IO now served by Rust backend)
+      BACKEND_URL: ${BACKEND_URL:-http://rust-backend:8168}
+      
+      # Sandbox Executor URL
+      SANDBOX_EXECUTOR_URL: ${SANDBOX_EXECUTOR_URL:-http://sandbox-executor:8090}
+      
+      # Python Backend (for backward compatibility features)
+      ENV: ${ENV:-prod}
+      PORT: 8168
+      WEBUI_SECRET_KEY: ${WEBUI_SECRET_KEY:-}
+      
+      # Database (Python backend may need it for certain features)
+      DATABASE_URL: postgresql://${POSTGRES_USER:-open_webui}:${POSTGRES_PASSWORD:-open_webui_password}@postgres:5432/${POSTGRES_DB:-open_webui}
+      
+      # OpenAI
+      OPENAI_API_BASE_URL: ${OPENAI_API_BASE_URL:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      
+      # RAG & Embeddings
+      RAG_EMBEDDING_MODEL: ${RAG_EMBEDDING_MODEL:-sentence-transformers/all-MiniLM-L6-v2}
+      RAG_RERANKING_MODEL: ${RAG_RERANKING_MODEL:-}
+      RAG_EMBEDDING_MODEL_AUTO_UPDATE: ${RAG_EMBEDDING_MODEL_AUTO_UPDATE:-false}
+      
+      # Whisper
+      WHISPER_MODEL: ${WHISPER_MODEL:-base}
+      
+      # Redis
+      REDIS_URL: redis://redis:6379
+      
+      # ChromaDB
+      CHROMA_URL: ${CHROMA_URL:-http://chromadb:8000}
+      
+      # Features
+      ENABLE_RAG_WEB_SEARCH: ${ENABLE_RAG_WEB_SEARCH:-false}
+      ENABLE_RAG_HYBRID_SEARCH: ${ENABLE_RAG_HYBRID_SEARCH:-false}
+      ENABLE_IMAGE_GENERATION: ${ENABLE_IMAGE_GENERATION:-false}
+      
+      # Analytics
+      SCARF_NO_ANALYTICS: ${SCARF_NO_ANALYTICS:-true}
+      DO_NOT_TRACK: ${DO_NOT_TRACK:-true}
+    
+    volumes:
+      - frontend_data:/app/backend/data
+    ports:
+      - "${OPEN_WEBUI_PORT:-3000}:8168"
+    depends_on:
+      rust-backend:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      chromadb:
+        condition: service_healthy
+      sandbox-executor:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8168/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
+    networks:
+      - open-webui-network
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  chromadb_data:
+    driver: local
+  rust_backend_data:
+    driver: local
+  frontend_data:
+    driver: local
+
+networks:
+  open-webui-network:
+    driver: bridge
