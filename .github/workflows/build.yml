@@ -126,7 +126,7 @@ jobs:
       - name: Download Frontend Build
         uses: actions/download-artifact@v6
         with:
-          name: frontend-build
+          name: svelte-frontend-build
           path: frontend/build/
 
       - name: Install Linux Dependencies
