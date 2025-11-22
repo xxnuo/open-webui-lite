@@ -8,8 +8,8 @@ on:
     tags:
       - "v*"
     paths:
-      - "backend/rust-backend/**"
-      - "backend/svelte-frontend/**"
+      - "backend/**"
+      - "frontend/**"
       - "src-tauri/**"
       - ".github/workflows/build.yml"
 
@@ -36,14 +36,14 @@ jobs:
       - name: Generate Frontend Cache Key
         id: frontend-hash
         run: |
-          HASH=$(find backend/svelte-frontend/src backend/svelte-frontend/static backend/svelte-frontend/package.json backend/svelte-frontend/bun.lock backend/svelte-frontend/vite.config.ts backend/svelte-frontend/svelte.config.js backend/svelte-frontend/tailwind.config.js -type f | sort | xargs sha256sum | sha256sum | cut -d' ' -f1)
+          HASH=$(find frontend/src frontend/static frontend/package.json frontend/bun.lock frontend/vite.config.ts frontend/svelte.config.js frontend/tailwind.config.js -type f | sort | xargs sha256sum | sha256sum | cut -d' ' -f1)
           echo "hash=$HASH" >> $GITHUB_OUTPUT
 
       - name: Cache Frontend Build
         id: cache-frontend
         uses: actions/cache@v4
         with:
-          path: backend/svelte-frontend/build/
+          path: frontend/build/
           key: frontend-build-${{ steps.frontend-hash.outputs.hash }}
           restore-keys: |
             frontend-build-
@@ -60,7 +60,7 @@ jobs:
       - uses: actions/upload-artifact@v5
         with:
           name: svelte-frontend-build
-          path: backend/svelte-frontend/build/
+          path: frontend/build/
           retention-days: 1
 
   # Build backend and desktop in one job
@@ -104,7 +104,7 @@ jobs:
       - uses: swatinem/rust-cache@v2
         with:
           workspaces: |
-            './backend/rust-backend -> target'
+            './backend -> target'
             './src-tauri -> target'
           key: ${{ matrix.target }}
           cache-all-crates: true
@@ -126,8 +126,8 @@ jobs:
       - name: Download Frontend Build
         uses: actions/download-artifact@v6
         with:
-          name: svelte-frontend-build
-          path: backend/svelte-frontend/build/
+          name: frontend-build
+          path: frontend/build/
 
       - name: Install Linux Dependencies
         if: runner.os == 'Linux'
@@ -161,10 +161,10 @@ jobs:
           CARGO_PROFILE_RELEASE_LTO: thin
         run: |
           mkdir -p bin
-          cd backend/rust-backend
+          cd backend
           cargo fetch --target ${{ matrix.target }}
           cargo build --release --target ${{ matrix.target }}
-          cp target/${{ matrix.target }}/release/open-webui-rust ../../bin/open-coreui-${{ matrix.target }}
+          cp target/${{ matrix.target }}/release/open-webui-rust ../bin/open-coreui-${{ matrix.target }}
 
       - name: Build Backend (Windows)
         if: runner.os == 'Windows'
@@ -172,9 +172,9 @@ jobs:
           CARGO_PROFILE_RELEASE_LTO: thin
         run: |
           mkdir bin
-          cd backend/rust-backend
+          cd backend
           cargo build --release --target ${{ matrix.target }}
-          copy target/${{ matrix.target }}/release/open-webui-rust.exe ..\..\bin\open-coreui-${{ matrix.target }}.exe
+          copy target/${{ matrix.target }}/release/open-webui-rust.exe ..\bin\open-coreui-${{ matrix.target }}.exe
 
       - name: Build Desktop (Unix)
         if: runner.os != 'Windows'

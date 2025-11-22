@@ -1,6 +1,0 @@
-{
-  "code": "console.log('Node.js version:', process.version);\nconsole.log('Hello from secure sandbox!');\n\nconst data = { result: 42, message: 'Success' };\nconsole.log(JSON.stringify(data, null, 2));",
-  "language": "javascript",
-  "timeout": 30
-}
-

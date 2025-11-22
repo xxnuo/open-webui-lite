@@ -1,5 +1,3 @@
-The svelte frontend license: [open-webui/LICENSE](https://github.com/open-webui/open-webui/blob/main/LICENSE)
-
 The initial Rust backend project was written by knox and released under the MIT license; later, knox made it closed-source. We thank knox for his work. xxnuo continued development based on the last open-source version and released it under the Apache 2.0 license.
 
 The backend full license: [open-coreui/LICENSE](https://github.com/xxnuo/open-coreui/blob/main/LICENSE)

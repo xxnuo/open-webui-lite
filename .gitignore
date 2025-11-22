@@ -1,10 +1,54 @@
-/build
+# Rust
+/target/
+**/*.rs.bk
+*.pdb
+Cargo.lock
+
+# Environment
 .env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Data
+/data/
+*.db
+*.db-shm
+*.db-wal
+
+# Logs
+*.log
+logs/
+
+# OS
+Thumbs.db
+.Trashes
+.Spotlight-V100
+.AppleDouble
+.LSOverride
+
+# Build artifacts
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Frontend
+node_modules
+
+# Build artifacts
 /bin
-open-coreui.service
-/src-tauri/node_modules
+/build
 
 # AUR build artifacts
+open-coreui.service
 *.deb
 *.pkg.tar.zst
 /pkg
